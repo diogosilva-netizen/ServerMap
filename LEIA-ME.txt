@@ -1,0 +1,14 @@
+APLICATIVO DE CAMPO - EQUIPAMENTOS GOINFRA
+
+Suba os 5 arquivos desta pasta numa hospedagem com HTTPS (qualquer uma serve:
+GitHub Pages, Netlify, um diretorio do servidor da Fiscaltech...). Todos os
+arquivos precisam ficar na mesma pasta.
+
+No celular Android, abra o endereco no Chrome. Aparece "Instalar aplicativo"
+no menu; depois disso o icone fica na tela inicial, abre em tela cheia e
+funciona sem internet, porque o proprio aplicativo guarda os dados no aparelho.
+
+Para publicar uma base nova, substitua o index.html e troque a linha
+  const CACHE = "equip-goinfra-v1";
+do arquivo sw.js para v2, v3 e assim por diante. Os aparelhos atualizam sozinhos
+na proxima vez que abrirem com internet.

@@ -1,0 +1,1219 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0a5f97">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0;font:14px system-ui;background:#eaedf0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Equipamentos em Campo</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="icon" href="icon-192.png">
+
+<style>
+:root{
+  color-scheme: light;
+  --bg:#eaedf0;
+  --surface:#ffffff;
+  --surface-2:#f4f6f8;
+  --ink:#10161c;
+  --muted:#58636f;
+  --line:#ccd3da;
+  --line-soft:#e2e7eb;
+  --accent:#0a5f97;
+  --accent-soft:#d9e8f3;
+  --amber:#8f5a06;
+  --amber-soft:#f7e9cd;
+  --violet:#5d3f8c;
+  --violet-soft:#e8e1f5;
+  --green:#166b4e;
+  --map-bg:#e4e8eb;
+  --map-grid:#d0d7dd;
+  --map-road:#aeb9c3;
+  --map-label:#68737e;
+  --shadow:0 1px 2px rgba(16,28,40,.07), 0 6px 20px rgba(16,28,40,.07);
+  --sheet-shadow:0 -6px 32px rgba(16,28,40,.22);
+  --r:12px;
+  --fs:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
+  --fm:"IBM Plex Mono","Roboto Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --fd:Archivo,"IBM Plex Sans",-apple-system,Roboto,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --bg:#0d1116; --surface:#161c23; --surface-2:#1c232b;
+    --ink:#e9eef4; --muted:#97a4b1; --line:#2b343e; --line-soft:#222a33;
+    --accent:#63aee2; --accent-soft:#15303f;
+    --amber:#e3b25e; --amber-soft:#352814;
+    --violet:#b79ee3; --violet-soft:#282143;
+    --green:#5ec79c;
+    --map-bg:#121821; --map-grid:#212a34; --map-road:#3a4753; --map-label:#8e9ba8;
+    --shadow:0 1px 2px rgba(0,0,0,.45), 0 8px 24px rgba(0,0,0,.3);
+    --sheet-shadow:0 -6px 32px rgba(0,0,0,.55);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --bg:#0d1116; --surface:#161c23; --surface-2:#1c232b;
+  --ink:#e9eef4; --muted:#97a4b1; --line:#2b343e; --line-soft:#222a33;
+  --accent:#63aee2; --accent-soft:#15303f;
+  --amber:#e3b25e; --amber-soft:#352814;
+  --violet:#b79ee3; --violet-soft:#282143;
+  --green:#5ec79c;
+  --map-bg:#121821; --map-grid:#212a34; --map-road:#3a4753; --map-label:#8e9ba8;
+  --shadow:0 1px 2px rgba(0,0,0,.45), 0 8px 24px rgba(0,0,0,.3);
+  --sheet-shadow:0 -6px 32px rgba(0,0,0,.55);
+}
+
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:var(--fs);font-size:15px;line-height:1.45;
+  overscroll-behavior-y:none;
+}
+h1,h2,h3{font-family:var(--fd);margin:0;text-wrap:balance}
+a{color:var(--accent)}
+button{font:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:14px}
+
+/* ================= topo ================= */
+header.top{
+  position:sticky;top:env(safe-area-inset-top, 0px);z-index:40;
+  background:var(--bg);border-bottom:1px solid var(--line);
+}
+.top-inner{display:flex;flex-direction:column;gap:9px;padding-block:10px 9px}
+.brandrow{display:flex;align-items:center;gap:10px;justify-content:space-between}
+h1{font-size:16px;font-weight:700;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.counter{font-size:12.5px;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.counter b{color:var(--ink);font-weight:600}
+
+.field{position:relative}
+.field>svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--muted)}
+#q{
+  width:100%;font-family:var(--fm);font-size:16px;font-weight:600;letter-spacing:.03em;
+  padding:13px 44px 13px 40px;border:1.5px solid var(--line);border-radius:var(--r);
+  background:var(--surface);color:var(--ink);box-shadow:var(--shadow);
+}
+#q::placeholder{font-family:var(--fs);font-weight:400;letter-spacing:0;color:var(--muted)}
+#q:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+#q::-webkit-search-cancel-button{display:none}
+.clearbtn{
+  position:absolute;right:6px;top:50%;transform:translateY(-50%);
+  border:0;background:transparent;color:var(--muted);cursor:pointer;
+  font-size:22px;line-height:1;width:36px;height:36px;border-radius:8px;
+}
+.clearbtn:active{background:var(--surface-2)}
+
+/* barra de chips rolável */
+.chipbar{
+  display:flex;gap:7px;overflow-x:auto;scrollbar-width:none;
+  margin-inline:-14px;padding:1px 14px 3px;
+}
+.chipbar::-webkit-scrollbar{display:none}
+.chip{
+  flex:0 0 auto;font-size:13px;border:1px solid var(--line);
+  background:var(--surface);color:var(--muted);
+  padding:8px 13px;border-radius:999px;cursor:pointer;white-space:nowrap;
+  min-height:36px;display:inline-flex;align-items:center;gap:6px;
+}
+.chip:active{background:var(--surface-2)}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+.chip.gps[aria-pressed="true"]{background:var(--green);border-color:var(--green)}
+.chip .grp{font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;opacity:.7}
+
+.tabs{display:flex;gap:1px;background:var(--line);border-radius:10px;overflow:hidden;box-shadow:var(--shadow)}
+.tabs button{
+  flex:1;border:0;background:var(--surface);color:var(--muted);
+  padding:10px 8px;font-size:13.5px;font-weight:600;cursor:pointer;min-height:42px;
+}
+.tabs button[aria-selected="true"]{background:var(--accent);color:#fff}
+
+/* ================= layout ================= */
+main{padding-bottom:calc(28px + env(safe-area-inset-bottom, 0px))}
+.panes{display:block}
+body.view-map .listpane{display:none}
+body.view-list .mappane{display:none}
+
+/* ================= mapa ================= */
+.mapwrap{
+  margin-top:12px;border:1px solid var(--line-soft);border-radius:var(--r);
+  background:var(--map-bg);box-shadow:var(--shadow);overflow:hidden;position:relative;
+}
+#map{display:block;width:100%;height:min(62vh,540px);touch-action:none}
+.mapbar{position:absolute;top:9px;left:9px;right:9px;display:flex;gap:8px;align-items:flex-start;justify-content:flex-end;pointer-events:none;flex-wrap:wrap}
+.mapbar>*{pointer-events:auto}
+.legend{
+  margin-right:auto;background:color-mix(in srgb, var(--surface) 90%, transparent);
+  border:1px solid var(--line-soft);border-radius:8px;padding:6px 9px;
+  display:flex;gap:10px;flex-wrap:wrap;font-size:11px;color:var(--muted);box-shadow:var(--shadow);
+}
+.legend span{display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.legend i{width:9px;height:9px;border-radius:50%;display:inline-block}
+.zoomers{display:flex;flex-direction:column;gap:1px;background:var(--line);border-radius:9px;overflow:hidden;box-shadow:var(--shadow)}
+.zoomers button{width:38px;height:38px;border:0;background:var(--surface);color:var(--ink);font-size:17px;cursor:pointer}
+.zoomers button:active{background:var(--surface-2)}
+.mapfoot{
+  position:absolute;left:9px;bottom:9px;right:9px;display:flex;
+  justify-content:space-between;align-items:flex-end;gap:10px;
+  font-size:10.5px;color:var(--map-label);pointer-events:none;
+}
+.scalebar{display:flex;flex-direction:column;gap:2px;align-items:flex-start}
+.scalebar .bar{height:5px;border:1px solid var(--map-label);border-top:0}
+#tip{
+  position:absolute;z-index:5;pointer-events:none;opacity:0;transition:opacity .12s;
+  background:var(--surface);border:1px solid var(--line);border-radius:9px;
+  padding:7px 10px;box-shadow:var(--shadow);max-width:230px;font-size:12px;color:var(--muted);
+}
+#tip b{display:block;font-family:var(--fm);font-size:13px;color:var(--ink)}
+.mk{cursor:pointer}
+.road{fill:none;stroke:var(--map-road);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.road.dashed{stroke-dasharray:5 5;stroke-width:1.8}
+.grid-l{stroke:var(--map-grid);stroke-width:1}
+.glabel{fill:var(--map-label);font-size:10px;font-family:var(--fm)}
+.clabel{fill:var(--map-label);font-size:11px;font-weight:600;font-family:var(--fs);paint-order:stroke;stroke:var(--map-bg);stroke-width:3px;stroke-linejoin:round}
+.rlabel{fill:var(--map-road);font-size:10px;font-weight:700;font-family:var(--fm);paint-order:stroke;stroke:var(--map-bg);stroke-width:3px;stroke-linejoin:round}
+
+/* ================= lista ================= */
+.list{
+  margin-top:12px;background:var(--surface);border:1px solid var(--line-soft);
+  border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;
+}
+.row{
+  display:grid;grid-template-columns:1fr auto;gap:2px 10px;align-items:center;
+  width:100%;text-align:left;border:0;border-bottom:1px solid var(--line-soft);
+  background:var(--surface);color:var(--ink);padding:11px 14px;cursor:pointer;min-height:62px;
+}
+.row:last-child{border-bottom:0}
+a.row{text-decoration:none;color:var(--ink)}
+.grouphdr{padding:10px 14px;background:var(--surface-2);font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--line-soft)}
+.row:active{background:var(--surface-2)}
+.row.sel{background:var(--accent-soft)}
+.rtop{display:flex;align-items:center;gap:8px;min-width:0}
+.rserial{font-family:var(--fm);font-weight:700;font-size:16px;letter-spacing:.02em;white-space:nowrap}
+.rdot{width:9px;height:9px;border-radius:50%;flex:0 0 auto}
+.rloc{grid-column:1;font-size:13px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rside{grid-row:1 / span 2;grid-column:2;display:flex;flex-direction:column;align-items:flex-end;gap:3px}
+.rdist{font-family:var(--fm);font-size:13px;font-weight:600;color:var(--green);white-space:nowrap}
+.rtag{font-size:11px;font-weight:600;padding:2px 7px;border-radius:5px;white-space:nowrap;background:var(--surface-2);color:var(--muted)}
+mark{background:var(--amber-soft);color:inherit;border-radius:3px;padding:0 1px}
+.more{
+  width:100%;border:0;background:var(--surface-2);color:var(--muted);
+  padding:13px;font-size:13px;cursor:pointer;
+}
+.boot{display:grid;gap:8px;padding:22px 16px;font-size:13px;color:var(--muted);text-align:center}
+.boot b{color:var(--ink);font-size:15px;font-family:var(--fd)}
+.boot code{font-family:var(--fm);font-size:12px;color:var(--amber);word-break:break-word}
+.empty{border:1px dashed var(--line);border-radius:var(--r);padding:34px 18px;text-align:center;color:var(--muted);margin-top:12px}
+.empty b{color:var(--ink);font-family:var(--fm)}
+
+/* ================= ficha ================= */
+.scrim{
+  position:fixed;inset:0;z-index:50;background:rgba(10,16,22,.45);
+  opacity:0;pointer-events:none;transition:opacity .16s;
+}
+.scrim.open{opacity:1;pointer-events:auto}
+.sheet{
+  position:fixed;z-index:51;left:0;right:0;bottom:0;
+  max-height:88vh;overflow-y:auto;overscroll-behavior:contain;
+  background:var(--surface);border-radius:16px 16px 0 0;box-shadow:var(--sheet-shadow);
+  transform:translateY(102%);transition:transform .2s ease;
+  padding-bottom:calc(16px + env(safe-area-inset-bottom, 0px));
+}
+.sheet.open{transform:translateY(0)}
+.sheet-grip{width:38px;height:4px;border-radius:2px;background:var(--line);margin:9px auto 4px}
+.sheet-head{
+  position:sticky;top:0;background:var(--surface);z-index:2;
+  display:flex;align-items:flex-start;justify-content:space-between;gap:10px;
+  padding:6px 16px 10px;border-bottom:1px solid var(--line-soft);
+}
+.sheet-head .s{font-family:var(--fm);font-weight:700;font-size:21px;letter-spacing:.02em}
+.sheet-head .sub{font-size:13px;color:var(--muted);margin-top:2px}
+.closeb{border:1px solid var(--line);background:var(--surface);color:var(--muted);width:38px;height:38px;border-radius:9px;font-size:19px;cursor:pointer;flex:0 0 auto}
+.acts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:12px 16px}
+.acts a,.acts button{
+  display:flex;flex-direction:column;align-items:center;gap:5px;justify-content:center;
+  border:1px solid var(--line);border-radius:10px;background:var(--surface-2);
+  color:var(--accent);text-decoration:none;font-size:12px;font-weight:600;
+  padding:11px 6px;min-height:62px;cursor:pointer;text-align:center;
+}
+.acts a:active,.acts button:active{background:var(--accent-soft)}
+.acts .done{color:var(--green)}
+dl.specs{margin:0;display:grid;grid-template-columns:auto 1fr;border-top:1px solid var(--line-soft)}
+dl.specs dt,dl.specs dd{margin:0;padding:9px 16px;font-size:13.5px;border-bottom:1px solid var(--line-soft)}
+dl.specs dt{color:var(--muted);white-space:nowrap;padding-right:10px}
+dl.specs dd{text-align:right;font-variant-numeric:tabular-nums;overflow-wrap:anywhere;font-weight:500}
+.tags{display:flex;flex-wrap:wrap;gap:6px;padding:0 16px 12px}
+.tag{font-size:12px;font-weight:600;padding:4px 9px;border-radius:6px;white-space:nowrap}
+.t-a{background:var(--accent-soft);color:var(--accent)}
+.t-b{background:var(--amber-soft);color:var(--amber)}
+.t-c{background:var(--violet-soft);color:var(--violet)}
+.t-n{background:var(--surface-2);color:var(--muted);border:1px solid var(--line-soft)}
+
+/* ================= carregar / ajuda ================= */
+details.tools{
+  margin-top:18px;border:1px solid var(--line-soft);border-radius:var(--r);
+  background:var(--surface);box-shadow:var(--shadow);overflow:hidden;
+}
+details.tools>summary{
+  padding:14px 16px;cursor:pointer;font-weight:600;font-size:14px;list-style:none;
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+}
+details.tools>summary::-webkit-details-marker{display:none}
+details.tools>summary::after{content:"+";color:var(--muted);font-size:18px}
+details.tools[open]>summary::after{content:"\2212"}
+.toolbody{padding:0 16px 16px;display:grid;gap:12px;border-top:1px solid var(--line-soft);padding-top:14px}
+.toolbody p{margin:0;font-size:13px;color:var(--muted)}
+.toolbody ol{margin:0;padding-left:20px;font-size:13px;color:var(--muted);display:grid;gap:6px}
+.btn{
+  border:1px solid var(--line);background:var(--surface-2);color:var(--ink);
+  padding:12px 14px;border-radius:10px;cursor:pointer;font-size:13.5px;font-weight:600;
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;
+}
+.btn:active{background:var(--accent-soft);color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.linkrow{display:flex;gap:8px;flex-wrap:wrap}
+#mapurl{
+  flex:1 1 220px;min-width:0;font:inherit;font-size:16px;padding:11px 12px;
+  border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);
+}
+#mapurl:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.steps{background:var(--surface-2);border:1px solid var(--line-soft);border-radius:10px;padding:13px 15px;font-size:13px;display:grid;gap:8px}
+.steps b{color:var(--ink);font-family:var(--fd)}
+.steps ol{margin:0;padding-left:20px;color:var(--muted);display:grid;gap:6px}
+.steps p{margin:0;color:var(--muted)}
+.msg{font-size:13px;color:var(--amber);padding-top:4px}
+body.dragging details.tools{border-color:var(--accent)}
+footer{font-size:11.5px;color:var(--muted);padding:16px 0 0;text-align:center}
+
+/* ================= telas largas ================= */
+@media (min-width:900px){
+  .wrap{padding-inline:20px}
+  h1{font-size:19px}
+  .tabs{display:none}
+  .panes{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:18px;align-items:start}
+  body.view-map .listpane,body.view-list .mappane{display:block}
+  .mappane{position:sticky;top:calc(env(safe-area-inset-top, 0px) + 150px)}
+  #map{height:min(70vh,620px)}
+  .sheet{
+    left:auto;right:24px;bottom:24px;width:420px;border-radius:14px;
+    max-height:78vh;transform:translateY(calc(100% + 40px));
+  }
+  .row{min-height:58px}
+}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+
+<header class="top">
+  <div class="wrap top-inner">
+    <div class="brandrow">
+      <h1 id="title">Equipamentos <span id="origem" style="font-weight:600;color:var(--muted)"></span></h1>
+      <span class="counter"><b id="count">117</b>/<b id="total">117</b></span>
+    </div>
+    <div class="field">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <input id="q" type="search" autocomplete="off" autocapitalize="characters" spellcheck="false"
+             enterkeyhint="search" placeholder="Série, SRE, rodovia, km ou cidade" aria-label="Buscar equipamento">
+      <button class="clearbtn" id="clear" type="button" aria-label="Limpar busca" hidden>&times;</button>
+    </div>
+    <div class="chipbar" id="chipbar"></div>
+    <div class="tabs" role="tablist">
+      <button type="button" id="tabList" role="tab" aria-selected="true">Lista</button>
+      <button type="button" id="tabMap" role="tab" aria-selected="false">Mapa</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="panes">
+    <section class="listpane">
+      <div class="list" id="results"><div class="boot" id="bootmsg">
+        <b>Lista em modo leitura</b>
+        <span>O aplicativo que abriu este arquivo não executa a página, então a busca, os filtros e o mapa estão desligados.
+        Para usar tudo, toque em <b>Abrir com &rsaquo; Chrome</b> — ou salve o arquivo e abra pelo Chrome em <b>&#8942; &rsaquo; Downloads</b>.
+        Abaixo está a relação completa; tocar num equipamento abre o ponto no Google Maps.</span>
+        <code id="booterr" hidden></code>
+      </div><div class="grouphdr">1ª e 3ª O.S.</div><a class="row" href="geo:-16.824105,-49.892501?q=-16.824105,-49.892501(FSC-4081)"><div class="rtop"><i class="rdot" style="background:var(--accent)"></i><span class="rserial">FSC-4081</span></div><div class="rloc">GO-050 km 001+759 · Palmeiras de Goiás</div><div class="rside"><span class="rtag">CEV</span></div></a><a class="row" href="geo:-16.572148,-49.727636?q=-16.572148,-49.727636(FSC-4084)"><div class="rtop"><i class="rdot" style="background:var(--accent)"></i><span class="rserial">FSC-4084</span></div><div class="rloc">GO-060 km 044+764 · Santa Bárbara de Goiás</div><div class="rside"><span class="rtag">CEV</span></div></a><a class="row" href="geo:-16.572276,-49.728598?q=-16.572276,-49.728598(FSC-4085)"><div class="rtop"><i class="rdot" style="background:var(--accent)"></i><span class="rserial">FSC-4085</span></div><div class="rloc">GO-060 km 044+932 · Nazário</div><div class="rside"><span class="rtag">CEV</span></div></a><a class="row" href="geo:-16.565697,-49.773552?q=-16.565697,-49.773552(FSC-4086)"><div class="rtop"><i class="rdot" style="background:var(--accent)"></i><span class="rserial">FSC-4086</span></div><div class="rloc">GO-060 km 050+036 · Nazário</div><div class="rside"><span class="rtag">CEV</span></div></a><a class="row" href="geo:-16.53114,-50.396797?q=-16.53114,-50.396797(FSC-4087)"><div class="rtop"><i class="rdot" style="background:var(--accent)"></i><span class="rserial">FSC-4087</span></div><div class="rloc">GO-060 km 121+170 · São Luís de Belos Montes</div><div class="rside"><span class="rtag">CEV</span></div></a><a class="row" href="geo:-16.531455,-50.397315?q=-16.531455,-50.397315(FSC-4088)"><div class="rtop"><i class="rdot" style="background:var(--accent)"></i><span class="rserial">FSC-4088</span></div><div class="rloc">GO-060 km 121+268 · São Luís de Belos Montes</div><div class="rside"><span class="rtag">CEV</span></div></a><a class="row" href="geo:-16.556557,-49.405823?q=-16.556557,-49.405823(FSC-4088)"><div class="rtop"><i class="rdot" style="background:var(--accent)"></i><span class="rserial">FSC-4088</span></div><div class="rloc">GO-070 km 014+227 · Goianira</div><div class="rside"><span class="rtag">CEV</span></div></a><a class="row" href="geo:-16.554699,-49.406972?q=-16.554699,-49.406972(FSC-4089)"><div class="rtop"><i class="rdot" style="background:var(--accent)"></i><span class="rserial">FSC-4089</span></div><div class="rloc">GO-070 km 014+409 · Goianira</div><div class="rside"><span class="rtag">CEV</span></div></a><a class="row" href="geo:-16.506957,-49.422001?q=-16.506957,-49.422001(FSC110-0877)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0877</span></div><div class="rloc">GO-070 km 020+291 · Goianira</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.506887,-49.422334?q=-16.506887,-49.422334(FSC110-0878)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0878</span></div><div class="rloc">GO-070 km 020+306 · Goianira</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.503006,-49.421564?q=-16.503006,-49.421564(FSC-4092)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC-4092</span></div><div class="rloc">GO-070 km 020+729 · Goianira</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.499752,-49.421292?q=-16.499752,-49.421292(FSC-4093)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC-4093</span></div><div class="rloc">GO-070 km 021+097 · Goianira</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.492599,-49.423566?q=-16.492599,-49.423566(FSC-4094)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC-4094</span></div><div class="rloc">GO-070 km 021+991 · Goianira</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.466429,-49.439683?q=-16.466429,-49.439683(FSC-4095)"><div class="rtop"><i class="rdot" style="background:var(--accent)"></i><span class="rserial">FSC-4095</span></div><div class="rloc">GO-070 km 025+325 · Goianira</div><div class="rside"><span class="rtag">CEV</span></div></a><a class="row" href="geo:-16.466458,-49.439976?q=-16.466458,-49.439976(FSC-4096)"><div class="rtop"><i class="rdot" style="background:var(--accent)"></i><span class="rserial">FSC-4096</span></div><div class="rloc">GO-070 km 025+352 · Goianira</div><div class="rside"><span class="rtag">CEV</span></div></a><a class="row" href="geo:-16.425392,-49.465963?q=-16.425392,-49.465963(FSC-4097)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC-4097</span></div><div class="rloc">GO-070 km 030+662 · Caturaí</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.423133,-49.467765?q=-16.423133,-49.467765(FSC110-0879)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0879</span></div><div class="rloc">GO-070 km 031+032 · Caturaí</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.390842,-49.495416?q=-16.390842,-49.495416(FSC-4099)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC-4099</span></div><div class="rloc">GO-070 km 035+797 · Inhumas</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.389632,-49.495498?q=-16.389632,-49.495498(FSC-4100)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC-4100</span></div><div class="rloc">GO-070 km 035+908 · Goianira</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.358477,-49.510726?q=-16.358477,-49.510726(FSC-4101)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC-4101</span></div><div class="rloc">GO-070 km 039+740 · Inhumas</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.358712,-49.51095?q=-16.358712,-49.51095(FSC110-0839)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0839</span></div><div class="rloc">GO-070 km 039+806 · Inhumas</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.294767,-49.534905?q=-16.294767,-49.534905(FSC110-0829)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0829</span></div><div class="rloc">GO-070 km 047+436 · Inhumas</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.268394,-49.546407?q=-16.268394,-49.546407(FSC110-0830)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0830</span></div><div class="rloc">GO-070 km 050+540 · Inhumas</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.205393,-49.597109?q=-16.205393,-49.597109(FSC110-0831)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0831</span></div><div class="rloc">GO-070 km 060+150 · Itauçú</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.205342,-49.597526?q=-16.205342,-49.597526(FSC110-0832)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0832</span></div><div class="rloc">GO-070 km 060+216 · Itauçú</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.202572,-49.600823?q=-16.202572,-49.600823(FSC110-0833)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0833</span></div><div class="rloc">GO-070 km 060+690 · Itauçú</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.201864,-49.601973?q=-16.201864,-49.601973(FSC110-0834)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0834</span></div><div class="rloc">GO-070 km 060+715 · Itauçú</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.198848,-49.603943?q=-16.198848,-49.603943(FSC110-0835)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0835</span></div><div class="rloc">GO-070 km 061+198 · Itauçú</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.193223,-49.607221?q=-16.193223,-49.607221(FSC110-0836)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0836</span></div><div class="rloc">GO-070 km 061+933 · Itauçú</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.128058,-49.649879?q=-16.128058,-49.649879(FSC110-0837)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0837</span></div><div class="rloc">GO-070 km 070+594 · Itauçú</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.126803,-49.651072?q=-16.126803,-49.651072(FSC110-0838)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0838</span></div><div class="rloc">GO-070 km 070+789 · Itauçú</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.659192,-49.482765?q=-16.659192,-49.482765(FSC110-0873)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0873</span></div><div class="rloc">GO-469 km 015+465 · Trindade</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.660251,-49.482121?q=-16.660251,-49.482121(FSC-4082)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC-4082</span></div><div class="rloc">GO-469 km 015+603 · Trindade</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.382705,-49.279987?q=-16.382705,-49.279987(FSC-4083)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC-4083</span></div><div class="rloc">GO-222 km 042+000 · Nova Veneza</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.311159,-50.899565?q=-16.311159,-50.899565(FSC110-0840)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0840</span></div><div class="rloc">GO-060 km 188+800 · Israelândia</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.309202,-50.897556?q=-16.309202,-50.897556(FSC110-0841)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0841</span></div><div class="rloc">GO-060 km 188+500 · Israelândia</div><div class="rside"><span class="rtag">REV</span></div></a><div class="grouphdr">4ª O.S.</div><a class="row" href="geo:-16.791786,-49.940919?q=-16.791786,-49.940919(FSC110-0852)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0852</span></div><div class="rloc">GO-050 km 008+084 · Palmeiras De Goiás</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.584404,-49.700933?q=-16.584404,-49.700933(FSC110-0853)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0853</span></div><div class="rloc">GO-060 km 041+553 · Santa Bárbara De Goiás</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.582687,-49.704035?q=-16.582687,-49.704035(FSC110-0854)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0854</span></div><div class="rloc">GO-060 km 041+961 · Santa Bárbara De Goiás</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.564306,-49.771308?q=-16.564306,-49.771308(FSC110-0855)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0855</span></div><div class="rloc">GO-060 km 049+729 · Nazário</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.59221,-49.88281?q=-16.59221,-49.88281(FSC110-0856)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0856</span></div><div class="rloc">GO-060 km 062+422 · Nazário</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.590582,-49.889577?q=-16.590582,-49.889577(FSC110-0857)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0857</span></div><div class="rloc">GO-060 km 063+170 · Nazário</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.589923,-49.892649?q=-16.589923,-49.892649(FSC110-0858)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0858</span></div><div class="rloc">GO-060 km 063+518 · Nazário</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.60743,-50.13458?q=-16.60743,-50.13458(FSC110-0859)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0859</span></div><div class="rloc">GO-060 km 090+637 · Turvânia</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.542394,-50.348595?q=-16.542394,-50.348595(FSC110-0860)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0860</span></div><div class="rloc">GO-060 km 115+517 · São Luís De Montes Belos</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.52856,-50.378611?q=-16.52856,-50.378611(FSC110-0861)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0861</span></div><div class="rloc">GO-060 km 119+224 · São Luís De Montes Belos</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.52889,-50.381335?q=-16.52889,-50.381335(FSC110-0862)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0862</span></div><div class="rloc">GO-060 km 119+554 · São Luís De Montes Belos</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.533845,-50.404412?q=-16.533845,-50.404412(FSC110-0863)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0863</span></div><div class="rloc">GO-060 km 122+066 · São Luís De Montes Belos</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.464528,-50.678035?q=-16.464528,-50.678035(FSC110-0864)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0864</span></div><div class="rloc">GO-060 km 155+393 · Moiporá</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.546057,-49.403884?q=-16.546057,-49.403884(FSC110-0865)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0865</span></div><div class="rloc">GO-070 km 015+470 · Goianira</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.544484,-49.403715?q=-16.544484,-49.403715(FSC110-0866)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0866</span></div><div class="rloc">GO-070 km 015+576 · Goianira</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.372213,-49.502982?q=-16.372213,-49.502982(FSC-4102)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC-4102</span></div><div class="rloc">GO-070 km 038+057 · Inhumas</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.369299,-49.505278?q=-16.369299,-49.505278(FSC110-0868)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0868</span></div><div class="rloc">GO-070 km 038+465 · Inhumas</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.339978,-49.516578?q=-16.339978,-49.516578(FSC110-0876)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0876</span></div><div class="rloc">GO-070 km 041+957 · Inhumas</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.311191,-49.525452?q=-16.311191,-49.525452(FSC110-0870)"><div class="rtop"><i class="rdot" style="background:var(--accent)"></i><span class="rserial">FSC110-0870</span></div><div class="rloc">GO-070 km 045+316 · Inhumas</div><div class="rside"><span class="rtag">CEV</span></div></a><a class="row" href="geo:-16.097614,-49.704051?q=-16.097614,-49.704051(FSC110-0871)"><div class="rtop"><i class="rdot" style="background:var(--accent)"></i><span class="rserial">FSC110-0871</span></div><div class="rloc">GO-070 km 077+414 · Itaberaí</div><div class="rside"><span class="rtag">CEV</span></div></a><a class="row" href="geo:-16.096902,-49.706707?q=-16.096902,-49.706707(FSC110-0872)"><div class="rtop"><i class="rdot" style="background:var(--accent)"></i><span class="rserial">FSC110-0872</span></div><div class="rloc">GO-070 km 077+693 · Itaberaí</div><div class="rside"><span class="rtag">CEV</span></div></a><a class="row" href="geo:-17.281659,-49.396044?q=-17.281659,-49.396044(FSC110-0867%20C%20/ FSC110-0869%20D)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0867 C / FSC110-0869 D</span></div><div class="rloc">GO-217 km 081+550 · Cromínia</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.374468,-49.964847?q=-16.374468,-49.964847(FSC110-0874)"><div class="rtop"><i class="rdot" style="background:var(--accent)"></i><span class="rserial">FSC110-0874</span></div><div class="rloc">GO-156 km 090+380 · Anicuns</div><div class="rside"><span class="rtag">CEV</span></div></a><a class="row" href="geo:-16.37726,-49.96409?q=-16.37726,-49.96409(FSC110-0875)"><div class="rtop"><i class="rdot" style="background:var(--accent)"></i><span class="rserial">FSC110-0875</span></div><div class="rloc">GO-156 km 090+000 · Anicuns</div><div class="rside"><span class="rtag">CEV</span></div></a><div class="grouphdr">5ª O.S.</div><a class="row" href="geo:-16.844406,-49.401736?q=-16.844406,-49.401736(FSC110-0880)"><div class="rtop"><i class="rdot" style="background:var(--accent)"></i><span class="rserial">FSC110-0880</span></div><div class="rloc">GO-040 km 020+722 · ARAGOIÂNIA</div><div class="rside"><span class="rtag">CEV</span></div></a><a class="row" href="geo:-16.870125,-49.434442?q=-16.870125,-49.434442(FSC110-0881)"><div class="rtop"><i class="rdot" style="background:var(--accent)"></i><span class="rserial">FSC110-0881</span></div><div class="rloc">GO-040 km 025+388 · ARAGOIÂNIA</div><div class="rside"><span class="rtag">CEV</span></div></a><a class="row" href="geo:-16.912167,-49.451094?q=-16.912167,-49.451094(FSC110-0882)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0882</span></div><div class="rloc">GO-040 km 030+384 · ARAGOIÂNIA</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.9261,-49.4442?q=-16.9261,-49.4442(FSC110-0883)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0883</span></div><div class="rloc">GO-040 km 032+618 · ARAGOIÂNIA</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.926874,-49.443386?q=-16.926874,-49.443386(FSC110-0884)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0884</span></div><div class="rloc">GO-040 km 032+753 · ARAGOIÂNIA</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.986642,-49.429706?q=-16.986642,-49.429706(FSC110-0885)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0885</span></div><div class="rloc">GO-040 km 040+255 · ARAGOIÂNIA</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.833731,-49.879893?q=-16.833731,-49.879893(FSC110-0886)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0886</span></div><div class="rloc">GO-050 km 000+016 · PALMEIRAS DE GOIÁS</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.046284,-49.789495?q=-16.046284,-49.789495(FSC110-0887)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0887</span></div><div class="rloc">GO-070 km 088+826 · ITABERAÍ</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.046661,-49.789218?q=-16.046661,-49.789218(FSC110-0888)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0888</span></div><div class="rloc">GO-070 km 088+831 · ITABERAÍ</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.044196,-49.790458?q=-16.044196,-49.790458(FSC110-0889)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0889</span></div><div class="rloc">GO-070 km 089+106 · ITABERAÍ</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.106399,-49.334313?q=-16.106399,-49.334313(FSC110-0890)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0890</span></div><div class="rloc">GO-080 km 064+015 · PETROLINA DE GOIÁS</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.106684,-49.334434?q=-16.106684,-49.334434(FSC110-0891)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0891</span></div><div class="rloc">GO-080 km 064+033 · PETROLINA DE GOIÁS</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.013201,-49.295782?q=-16.013201,-49.295782(FSC110-0892)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0892</span></div><div class="rloc">GO-080 km 075+271 · PETROLINA DE GOIÁS</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.0072,-49.2947?q=-16.0072,-49.2947(FSC110-0893)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0893</span></div><div class="rloc">GO-080 km 075+922 · PETROLINA DE GOIÁS</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-15.9335,-49.2581?q=-15.9335,-49.2581(FSC110-0894)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0894</span></div><div class="rloc">GO-080 km 085+373 · SÃO FRANCISCO DE GOIÁS</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-15.9335,-49.2583?q=-15.9335,-49.2583(FSC110-0895)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0895</span></div><div class="rloc">GO-080 km 085+378 · SÃO FRANCISCO DE GOIÁS</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.0551,-49.6122?q=-16.0551,-49.6122(FSC110-0896)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0896</span></div><div class="rloc">GO-154 km 122+754 · TAQUARAL DE GOIÁS</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.0526,-49.6116?q=-16.0526,-49.6116(FSC110-0897)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0897</span></div><div class="rloc">GO-154 km 123+035 · TAQUARAL DE GOIÁS</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-15.9291,-49.6052?q=-15.9291,-49.6052(FSC110-0898)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0898</span></div><div class="rloc">GO-154 km 136+922 · ITAGUARI</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.133,-50.234?q=-16.133,-50.234(FSC110-0899)"><div class="rtop"><i class="rdot" style="background:var(--accent)"></i><span class="rserial">FSC110-0899</span></div><div class="rloc">GO-164 km 447+625 · MOSSÂMEDES</div><div class="rside"><span class="rtag">CEV</span></div></a><a class="row" href="geo:-16.1313,-50.2296?q=-16.1313,-50.2296(FSC110-0900)"><div class="rtop"><i class="rdot" style="background:var(--accent)"></i><span class="rserial">FSC110-0900</span></div><div class="rloc">GO-164 km 448+196 · MOSSÂMEDES</div><div class="rside"><span class="rtag">CEV</span></div></a><a class="row" href="geo:-16.0963,-50.1242?q=-16.0963,-50.1242(FSC110-0901)"><div class="rtop"><i class="rdot" style="background:var(--accent)"></i><span class="rserial">FSC110-0901</span></div><div class="rloc">GO-164 km 461+174 · MOSSÂMEDES</div><div class="rside"><span class="rtag">CEV</span></div></a><a class="row" href="geo:-16.36682,-49.320268?q=-16.36682,-49.320268(FSC110-0902)"><div class="rtop"><i class="rdot" style="background:var(--accent)"></i><span class="rserial">FSC110-0902</span></div><div class="rloc">GO-222 km 046+224 · NOVA VENEZA</div><div class="rside"><span class="rtag">CEV</span></div></a><a class="row" href="geo:-16.366333,-49.321051?q=-16.366333,-49.321051(FSC110-0937)"><div class="rtop"><i class="rdot" style="background:var(--accent)"></i><span class="rserial">FSC110-0937</span></div><div class="rloc">GO-222 km 046+257 · NOVA VENEZA</div><div class="rside"><span class="rtag">CEV</span></div></a><a class="row" href="geo:-16.3488,-49.406?q=-16.3488,-49.406(FSC110-0903)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0903</span></div><div class="rloc">GO-222 km 055+863 · BRAZABRANTES</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.3488,-49.4114?q=-16.3488,-49.4114(FSC110-0904)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0904</span></div><div class="rloc">GO-222 km 056+446 · BRAZABRANTES</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.3428,-49.5024?q=-16.3428,-49.5024(FSC110-0905)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0905</span></div><div class="rloc">GO-222 km 066+463 · INHUMAS</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.5137,-49.8238?q=-16.5137,-49.8238(FSC110-0906)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0906</span></div><div class="rloc">GO-326 km 007+916 · AVELINÓPOLIS</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.5121,-49.8261?q=-16.5121,-49.8261(FSC110-0907)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0907</span></div><div class="rloc">GO-326 km 008+210 · AVELINÓPOLIS</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-17.115,-49.9849?q=-17.115,-49.9849(FSC110-0908)"><div class="rtop"><i class="rdot" style="background:var(--accent)"></i><span class="rserial">FSC110-0908</span></div><div class="rloc">GO-568 km 002+220 · INDIARA</div><div class="rside"><span class="rtag">CEV</span></div></a><a class="row" href="geo:-17.1136,-49.9844?q=-17.1136,-49.9844(FSC110-0909)"><div class="rtop"><i class="rdot" style="background:var(--accent)"></i><span class="rserial">FSC110-0909</span></div><div class="rloc">GO-568 km 002+393 · INDIARA</div><div class="rside"><span class="rtag">CEV</span></div></a><a class="row" href="geo:-16.069521,-49.768887?q=-16.069521,-49.768887(FSC110-0910)"><div class="rtop"><i class="rdot" style="background:var(--accent)"></i><span class="rserial">FSC110-0910</span></div><div class="rloc">GO-070 km 085+350 · ITABERAÍ</div><div class="rside"><span class="rtag">CEV</span></div></a><a class="row" href="geo:-16.364175,-49.508822?q=-16.364175,-49.508822(FSC110-0911)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0911</span></div><div class="rloc">GO-070 km 039+200 · INHUMAS</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.607585,-50.146074?q=-16.607585,-50.146074(FSC110-0912)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0912</span></div><div class="rloc">GO-060 km 091+980 · TURVÂNIA</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.6061,-50.1197?q=-16.6061,-50.1197(FSC110-0913)"><div class="rtop"><i class="rdot" style="background:var(--accent)"></i><span class="rserial">FSC110-0913</span></div><div class="rloc">GO-060 km 089+000 · TURVÂNIA</div><div class="rside"><span class="rtag">CEV</span></div></a><div class="grouphdr">6ª e 7ª O.S.</div><a class="row" href="geo:-16.828523,-49.837254?q=-16.828523,-49.837254(FSC110-0915)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0915</span></div><div class="rloc">GO-050 km 063+790 · Palmeiras de Goiás</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.819182,-50.406512?q=-16.819182,-50.406512(FSC110-0916)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0916</span></div><div class="rloc">GO-050 km 139+018 · São João da Paraúna</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.820149,-50.408064?q=-16.820149,-50.408064(FSC110-0917)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0917</span></div><div class="rloc">GO-050 km 139+215 · São João da Paraúna</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.447797,-49.951527?q=-16.447797,-49.951527(FSC110-0918)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0918</span></div><div class="rloc">GO-156 km 081+565 · Anicuns</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.8872,-50.1598?q=-16.8872,-50.1598(FSC110-0919)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0919</span></div><div class="rloc">GO-162 km 040+914 · Palminópolis</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.475683,-50.388625?q=-16.475683,-50.388625(FSC110-0920)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0920</span></div><div class="rloc">GO-164 km 402+183 · São Luís de Montes Belos</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.134128,-50.219489?q=-16.134128,-50.219489(FSC110-0921)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0921</span></div><div class="rloc">GO-164 km 449+305 · Mossâmedes</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.099784,-50.128025?q=-16.099784,-50.128025(FSC110-0922)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0922</span></div><div class="rloc">GO-164 km 460+613 · Mossâmedes</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.092988,-50.120584?q=-16.092988,-50.120584(FSC110-0923)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0923</span></div><div class="rloc">GO-164 km 461+706 · Mossâmedes</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.467191,-49.755691?q=-16.467191,-49.755691(FSC110-0924)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0924</span></div><div class="rloc">GO-512 km 009+152 · Avelinópolis</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.53001,-50.36775?q=-16.53001,-50.36775(FSC110-0925)"><div class="rtop"><i class="rdot" style="background:var(--accent)"></i><span class="rserial">FSC110-0925</span></div><div class="rloc">GO-060 km 119+000 · São Luís de Montes Belos</div><div class="rside"><span class="rtag">CEV</span></div></a><a class="row" href="geo:-16.53001,-50.36775?q=-16.53001,-50.36775(FSC110-0926)"><div class="rtop"><i class="rdot" style="background:var(--accent)"></i><span class="rserial">FSC110-0926</span></div><div class="rloc">GO-060 km 119+000 · São Luís de Montes Belos</div><div class="rside"><span class="rtag">CEV</span></div></a><a class="row" href="geo:-16.528145,-50.37507?q=-16.528145,-50.37507(FSC110-0927)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0927</span></div><div class="rloc">GO-060 km 120+000 · São Luís de Montes Belos</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.528398,-50.376479?q=-16.528398,-50.376479(FSC110-0928)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0928</span></div><div class="rloc">GO-060 km 120+050 · São Luís de Montes Belos</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.529318,-50.385079?q=-16.529318,-50.385079(FSC110-0929)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0929</span></div><div class="rloc">GO-060 km 121+000 · São Luís de Montes Belos</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.52949,-50.386424?q=-16.52949,-50.386424(FSC110-0930)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0930</span></div><div class="rloc">GO-060 km 121+050 · São Luís de Montes Belos</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.530144,-50.391237?q=-16.530144,-50.391237(FSC110-0931)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0931</span></div><div class="rloc">GO-060 km 121+500 · São Luís de Montes Belos</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.537832,-50.413858?q=-16.537832,-50.413858(FSC110-0932)"><div class="rtop"><i class="rdot" style="background:var(--accent)"></i><span class="rserial">FSC110-0932</span></div><div class="rloc">GO-060 km 124+350 · São Luís de Montes Belos</div><div class="rside"><span class="rtag">CEV</span></div></a><a class="row" href="geo:-16.538852,-50.415762?q=-16.538852,-50.415762(FSC110-0933)"><div class="rtop"><i class="rdot" style="background:var(--accent)"></i><span class="rserial">FSC110-0933</span></div><div class="rloc">GO-060 km 124+500 · São Luís de Montes Belos</div><div class="rside"><span class="rtag">CEV</span></div></a><a class="row" href="geo:-16.502007,-50.388825?q=-16.502007,-50.388825(FSC110-0934)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0934</span></div><div class="rloc">GO-164 km 406+700 · São Luís de Montes Belos</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.5049,-50.38912?q=-16.5049,-50.38912(FSC110-0935)"><div class="rtop"><i class="rdot" style="background:var(--amber)"></i><span class="rserial">FSC110-0935</span></div><div class="rloc">GO-164 km 407+000 · São Luís de Montes Belos</div><div class="rside"><span class="rtag">REV</span></div></a><a class="row" href="geo:-16.668012,-50.455116?q=-16.668012,-50.455116(FSC110-0936)"><div class="rtop"><i class="rdot" style="background:var(--accent)"></i><span class="rserial">FSC110-0936</span></div><div class="rloc">GO-417 km 018+850 · Aurilândia</div><div class="rside"><span class="rtag">CEV</span></div></a></div>
+      <div class="empty" id="empty" hidden></div>
+    </section>
+
+    <section class="mappane">
+      <div class="mapwrap" id="mapwrap">
+        <svg id="map" role="img" aria-label="Mapa dos equipamentos"></svg>
+        <div class="mapbar">
+          <div class="legend" id="legend"></div>
+          <div class="zoomers">
+            <button type="button" id="zin" aria-label="Aproximar">+</button>
+            <button type="button" id="zout" aria-label="Afastar">&minus;</button>
+            <button type="button" id="zfit" aria-label="Enquadrar resultados">&#9744;</button>
+          </div>
+        </div>
+        <div class="mapfoot">
+          <div class="scalebar"><span id="scaletxt"></span><div class="bar" id="scalebarline"></div></div>
+          <span id="mapnote">rodovias &copy; OpenStreetMap</span>
+        </div>
+        <div id="tip"></div>
+      </div>
+    </section>
+  </div>
+
+  <details class="tools" id="tools">
+    <summary>Carregar outro mapa &middot; ajuda</summary>
+    <div class="toolbody">
+      <p>Cole o link de um mapa do Google My Maps, ou abra um arquivo <b>.kmz</b> / <b>.kml</b> salvo no aparelho. A leitura é feita no próprio celular.</p>
+      <div class="linkrow">
+        <input id="mapurl" type="url" inputmode="url" autocomplete="off" spellcheck="false" placeholder="https://www.google.com/maps/d/viewer?mid=…" aria-label="Link do Google My Maps">
+        <button class="btn" id="usemap" type="button">Usar link</button>
+        <button class="btn" id="pick" type="button">Abrir arquivo</button>
+      </div>
+      <input type="file" id="file" accept=".kmz,.kml,application/vnd.google-earth.kmz,application/vnd.google-earth.kml+xml" hidden>
+      <div id="steps" hidden></div>
+      <p id="helptext"></p>
+      <div class="steps">
+        <b>Usar sem sinal na estrada</b>
+        <ol>
+          <li>No <b>Google Maps</b>, toque na sua foto de perfil &rsaquo; <b>Mapas off-line</b> &rsaquo; <b>Selecionar seu próprio mapa</b>.</li>
+          <li>Enquadre a região das rodovias (de Israelândia a Goianira, e de Itaberaí a Indiara) e toque em <b>Fazer download</b>. São cerca de 200&nbsp;MB.</li>
+          <li>Com a área baixada, o botão <b>Navegar</b> traça a rota de carro sem internet.</li>
+        </ol>
+        <p>O Google Maps não guarda pontos personalizados off-line — a relação dos equipamentos fica aqui nesta página, que funciona sem rede.</p>
+      </div>
+      <div class="msg" id="msg" hidden></div>
+    </div>
+  </details>
+
+  <footer><span id="footnote"></span></footer>
+</main>
+
+<div class="scrim" id="scrim"></div>
+<aside class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Ficha do equipamento" hidden></aside>
+
+<script>
+window.addEventListener("error", function(ev){
+  var c = document.getElementById("booterr");
+  if (!c) return;
+  c.hidden = false;
+  c.textContent = "Erro: " + (ev.message || "falha ao executar a página");
+});
+</script>
+
+<script>
+(function(){
+  "use strict";
+  var EMBED = {"origem":"Goinfra","data":"25/09/2026","fields":["Ponto","Endereço Proposta","SRE","Nº de Série","Latitude","Longitude","Sentido","Sentido (Cidade)","Número de Faixas","Cidade","Vel. da Via (km/h)","Vel. de operação (km/h)","Tipo Equipamento","Regras de Operação","Captura","Energia","Empresa antiga","Cód. Equipamento (Cliente)"],"layerNames":["1ª e 3ª O.S.","4ª O.S.","5ª O.S.","6ª e 7ª O.S."],"layers":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3],"names":["1. [FSC-4081] GO-050 km 001+759","11. [FSC-4084] GO-060 km 044+764","12. [FSC-4085] GO-060 km 044+932","13. [FSC-4086] GO-060 km 050+036","14. [FSC-4087] GO-060 km 121+170","15. [FSC-4087] GO-060 km 121+268","19. [FSC-4088] GO-070 km 014+227","20. [FSC-4089] GO-070 km 014+409","24. [FSC110-0877] GO-070 km 020+291","25. [FSC110-0878] GO-070 km 020+306","26. [FSC-4092] GO-070 km 020+729","27. [FSC-4093] GO-070 km 021+097","28. [FSC-4094] GO-070 km 021+991","29. [FSC-4095] GO-070 km 025+325","30. [FSC-4096] GO-070 km 025+352","31. [FSC-4097] GO-070 km 030+662","32. [FSC110-0879] GO-070 km 031+032","33. [FSC-4099] GO-070 km 035+797","34. [FSC-4100] GO-070 km 035+908","35. [FSC-4101] GO-070 km 039+740","36. [FSC110-0839] GO-070 km 039+806","37. [FSC110-0829] GO-070 km 047+436","38. [FSC110-0830] GO-070 km 050+540","39. [FSC110-0831] GO-070 km 060+150","40. [FSC110-0832] GO-070 km 060+216","41. [FSC110-0833] GO-070 km 060+690","42. [FSC110-0834] GO-070 km 060+835","43. [FSC110-0835] GO-070 km 061+198","44. [FSC110-0836] GO-070 km 061+933","45. [FSC110-0837] GO-070 km 070+594","46. [FSC110-0838] GO-070 km 070+789","51. [FSC110-0873] GO-469 km 015+465","52. [FSC-4082] GO-469 km 015+603","53. [FSC-4083] GO-222 km 042+000","54. [FSC110-0840] GO-060 km 188+800","55. [FSC110-0841] GO-060 km 188+500","68. [FSC110-0852] GO-050 km 008+084","74. [FSC110-0853] GO-060 km 041+553","75. [FSC110-0854] GO-060 km 041+961","76. [FSC110-0855] GO-060 km 049+729","77. [FSC110-0856] GO-060 km 062+422","78. [FSC110-0857] GO-060 km 063+170","79. [FSC110-0858] GO-060 km 063+518","80. [FSC110-0859] GO-060 km 090+637","83. [FSC110-0860] GO-060 km 115+517","84. [FSC110-0861] GO-060 km 119+224","85. [FSC110-0862] GO-060 km 119+554","86. [FSC110-0863] GO-060 km 122+066","87. [FSC110-0864] GO-060 km 155+393","99. [FSC110-0865] GO-070 km 015+470","100. [FSC110-0866] GO-070 km 015+576","102. [FSC-4102] GO-070 km 038+057","103. [FSC110-0868] GO-070 km 038+465","104. [FSC110-0876] GO-070 km 041+957","105. [FSC110-0870] GO-070 km 045+316","106. [FSC110-0871] GO-070 km 077+414","107. [FSC110-0872] GO-070 km 077+693","110. [FSC110-0867 (C-2FX) /FSC110-0869 (D-2FX)] GO-217 km 081+550","114. [FSC110-0874] GO-156 km 090+380","115. [FSC110-0875] GO-156 km 090+000","117. [FSC110-0880] GO-040 km 020+722","118. [FSC110-0881] GO-040 km 025+388","119. [FSC110-0882] GO-040 km 030+384","120. [FSC110-0883] GO-040 km 032+618","121. [FSC110-0884] GO-040 km 032+753","122. [FSC110-0885] GO-040 km 040+255","123. [FSC110-0886] GO-050 km 000+016","130. [FSC110-0887] GO-070 km 088+826","131. [FSC110-0888] GO-070 km 088+831","132. [FSC110-0889] GO-070 km 089+106","133. [FSC110-0890] GO-080 km 064+015","134. [FSC110-0891] GO-080 km 064+033","135. [FSC110-0892] GO-080 km 075+271","136. [FSC110-0893] GO-080 km 075+922","137. [FSC110-0894] GO-080 km 085+373","138. [FSC110-0895] GO-080 km 085+378","139. [FSC110-0896] GO-154 km 122+754","140. [FSC110-0897] GO-154 km 123+035","141. [FSC110-0898] GO-154 km 136+922","143. [FSC110-0899] GO-164 km 447+625","144. [FSC110-0900] GO-164 km 448+196","145. [FSC110-0901] GO-164 km 461+174","147. [FSC110-0902] GO-222 km 046+224","148. [FSC110-0937] GO-222 km 046+257","149. [FSC110-0903] GO-222 km 055+863","150. [FSC110-0904] GO-222 km 056+446","151. [FSC110-0905] GO-222 km 066+463","155. [FSC110-0906] GO-326 km 007+916","156. [FSC110-0907] GO-326 km 008+210","166. [FSC110-0908] GO-568 km 002+220","167. [FSC110-0909] GO-568 km 002+393","168. [FSC110-0910] GO-070 km 085+350","170. [FSC110-0911] GO-070 km 039+200","171. [FSC110-0912] GO-060 km 091+980","172. [FSC110-0913] GO-060 km 089+000","182. [FSC110-0915] GO-050 km 063+790","183. [FSC110-0916] GO-050 km 139+018","184. [FSC110-0917] GO-050 km 139+215","186. [FSC110-0918] GO-156 km 081+565","187. [FSC110-0919] GO-162 km 040+914","190. [FSC110-0920] GO-164 km 402+183","191. [FSC110-0921] GO-164 km 449+305","192. [FSC110-0922] GO-164 km 460+613","193. [FSC110-0923] GO-164 km 461+706","205. [FSC110-0924] GO-512 km 009+152","211. [FSC110-0925] GO-060 km 119+000","212. [FSC110-0926] GO-060 km 119+000","213. [FSC110-0927] GO-060 km 120+000","214. [FSC110-0928] GO-060 km 120+050","215. [FSC110-0929] GO-060 km 121+000","216. [FSC110-0930] GO-060 km 121+050","217. [FSC110-0931] GO-060 km 121+500","218. [FSC110-0932] GO-060 km 124+350","219. [FSC110-0933] GO-060 km 124+500","220. [FSC110-0934] GO-164 km 406+700","221. [FSC110-0935] GO-164 km 407+000","227. [FSC110-0936] GO-417 km 018+850"],"coords":[-16.824105,-49.892501,-16.572148,-49.727636,-16.572276,-49.728598,-16.565697,-49.773552,-16.53114,-50.396797,-16.531455,-50.397315,-16.556557,-49.405823,-16.554699,-49.406972,-16.506957,-49.422001,-16.506887,-49.422334,-16.503006,-49.421564,-16.499752,-49.421292,-16.492599,-49.423566,-16.466429,-49.439683,-16.466458,-49.439976,-16.425392,-49.465963,-16.423133,-49.467765,-16.390842,-49.495416,-16.389632,-49.495498,-16.358477,-49.510726,-16.358712,-49.51095,-16.294767,-49.534905,-16.268394,-49.546407,-16.205393,-49.597109,-16.205342,-49.597526,-16.202572,-49.600823,-16.201864,-49.601973,-16.198848,-49.603943,-16.193223,-49.607221,-16.128058,-49.649879,-16.126803,-49.651072,-16.659192,-49.482765,-16.660251,-49.482121,-16.382705,-49.279987,-16.311159,-50.899565,-16.309202,-50.897556,-16.791786,-49.940919,-16.584404,-49.700933,-16.582687,-49.704035,-16.564306,-49.771308,-16.59221,-49.88281,-16.590582,-49.889577,-16.589923,-49.892649,-16.60743,-50.13458,-16.542394,-50.348595,-16.52856,-50.378611,-16.52889,-50.381335,-16.533845,-50.404412,-16.464528,-50.678035,-16.546057,-49.403884,-16.544484,-49.403715,-16.372213,-49.502982,-16.369299,-49.505278,-16.339978,-49.516578,-16.311191,-49.525452,-16.097614,-49.704051,-16.096902,-49.706707,-17.281659,-49.396044,-16.374468,-49.964847,-16.37726,-49.96409,-16.844406,-49.401736,-16.870125,-49.434442,-16.912167,-49.451094,-16.9261,-49.4442,-16.926874,-49.443386,-16.986642,-49.429706,-16.833731,-49.879893,-16.046284,-49.789495,-16.046661,-49.789218,-16.044196,-49.790458,-16.106399,-49.334313,-16.106684,-49.334434,-16.013201,-49.295782,-16.0072,-49.2947,-15.9335,-49.2581,-15.9335,-49.2583,-16.0551,-49.6122,-16.0526,-49.6116,-15.9291,-49.6052,-16.133,-50.234,-16.1313,-50.2296,-16.0963,-50.1242,-16.36682,-49.320268,-16.366333,-49.321051,-16.3488,-49.406,-16.3488,-49.4114,-16.3428,-49.5024,-16.5137,-49.8238,-16.5121,-49.8261,-17.115,-49.9849,-17.1136,-49.9844,-16.069521,-49.768887,-16.364175,-49.508822,-16.607585,-50.146074,-16.6061,-50.1197,-16.828523,-49.837254,-16.819182,-50.406512,-16.820149,-50.408064,-16.447797,-49.951527,-16.8872,-50.1598,-16.475683,-50.388625,-16.134128,-50.219489,-16.099784,-50.128025,-16.092988,-50.120584,-16.467191,-49.755691,-16.53001,-50.36775,-16.53001,-50.36775,-16.528145,-50.37507,-16.528398,-50.376479,-16.529318,-50.385079,-16.52949,-50.386424,-16.530144,-50.391237,-16.537832,-50.413858,-16.538852,-50.415762,-16.502007,-50.388825,-16.5049,-50.38912,-16.668012,-50.455116],"rows":[["1.0","GO-050 km 001+759","050UGO1100","FSC-4081","-16.824105","-49.892501","Ambos","Cezarina/Palmeiras de Goiás\nPalmeiras de Goiás/Cezarina","2.0","Palmeiras de Goiás","80.0","80.0","CEV","VEL","Traseira","Painel Solar","EX FISCAL",""],["11.0","GO-060 km 044+764","060EGO0050","FSC-4084","-16.572148°","-49.727636°","Crescente","Santa Bárbara de Goiás/Nazário","1.0","Santa Bárbara de Goiás","80.0","80.0","CEV","VEL","Traseira","Painel Solar","EX PK",""],["12.0","GO-060 km 044+932","060EGO0050","FSC-4085","-16.572276°","-49.728598°","Decrescente","Nazário/Santa Bárbara de Goiás","1.0","Nazário","80.0","80.0","CEV","VEL","Traseira","Painel Solar","EX PK",""],["13.0","GO-060 km 050+036","060EGO0070","FSC-4086","-16.565697°","-49.773552°","Ambos","Santa Bárbara de Goiás/Nazário\nNazário/Santa Bárbara de Goiás","2.0","Nazário","60.0","60.0","CEV","VEL","Traseira","Convencional","EX FISCAL",""],["14.0","GO-060 km 121+170","060EGO0150","FSC-4087","-16.531140°","-50.396797°","Crescente","São Luís de Belos Montes/Israelândia","1.0","São Luís de Belos Montes","80.0","80.0","CEV","VEL","Traseira","Convencional","EX FISCAL",""],["15.0","GO-060 km 121+268","060EGO0150","FSC-4088","-16.531455°","-50.397315°","Decrescente","Israelândia/São Luís de Belos Montes","1.0","São Luís de Belos Montes","80.0","80.0","CEV","VEL","Traseira","Convencional","EX FISCAL",""],["19.0","GO-070 km 014+227","070EGO0020","FSC-4088","-16.556557°","-49.405823°","Crescente","Goiânia/Goianira","2.0","Goianira","60.0","60.0","CEV","VEL","Traseira","Convencional","EX KOOP",""],["20.0","GO-070 km 014+409","070EGO0020","FSC-4089","-16.554699°","-49.406972°","Decrescente","Goianira/Goiânia","2.0","Goianira","60.0","60.0","CEV","VEL","Traseira","Convencional","EX KOOP",""],["24.0","GO-070 km 020+291","070EGO0020","FSC110-0877","-16.506957","-49.422001","Crescente","Goiânia/Inhumas","2.0","Goianira","80.0","40.0","REV","VEL","Traseira","Convencional","EX KOOP",""],["25.0","GO-070 km 020+306","070EGO0020","FSC110-0878","-16.506887","-49.422334","Decrescente","Inhumas/Goiânia","2.0","Goianira","40.0","40.0","REV","VEL","Traseira","Convencional","EX KOOP",""],["26.0","GO-070 km 020+729","070EGO0020","FSC-4092","-16.503006°","-49.421564°","Crescente","Goiânia/Inhumas","2.0","Goianira","80.0","40.0","REV","VEL","Traseira","Convencional","EX KOOP",""],["27.0","GO-070 km 021+097","070EGO0020","FSC-4093","-16.499752°","-49.421292°","Decrescente","Inhumas/Goiânia","2.0","Goianira","80.0","40.0","REV","VEL","Traseira","Convencional","EX KOOP",""],["28.0","GO-070 km 021+991","070EGO0030","FSC-4094","-16.492599°","-49.423566°","Decrescente","Inhumas/Goiânia","2.0","Goianira","80.0","60.0","REV","VEL","Traseira","Convencional","EX KOOP",""],["29.0","GO-070 km 025+325","070EGO0030","FSC-4095","-16.466429°","-49.439683°","Crescente","Goianira/Inhumas","2.0","Goianira","80.0","80.0","CEV","VEL","Traseira","Convencional","EX KOOP",""],["30.0","GO-070 km 025+352","070EGO0050","FSC-4096","-16.466458°","-49.439976°","Decrescente","Inhumas/Goianira","2.0","Goianira","80.0","80.0","CEV","VEL","Traseira","Convencional","EX KOOP",""],["31.0","GO-070 km 030+662","070EGO0050","FSC-4097","-16.425392°","-49.465963°","Crescente","Goianira/Inhumas","2.0","Caturaí","80.0","40.0","REV","VEL","Traseira","Convencional","EX KOOP",""],["32.0","GO-070 km 031+032","070EGO0070","FSC110-0879","-16.423133","-49.467765","Decrescente","Inhumas/Goianira","2.0","Caturaí","80.0","60.0","REV","VEL","Traseira","Painel Solar","EX KOOP",""],["33.0","GO-070 km 035+797","070EGO0070","FSC-4099","-16.390842","-49.495416","Decrescente","Itauçú/Goianira","2.0","Inhumas","80.0","40.0","REV","VEL","Traseira","Convencional","EX KOOP",""],["34.0","GO-070 km 035+908","070EGO0080","FSC-4100","-16.389632°","-49.495498°","Crescente","Goianira/Itauçú","2.0","Goianira","80.0","40.0","REV","VEL","Traseira","Convencional","EX KOOP",""],["35.0","GO-070 km 039+740","070EGO0080","FSC-4101","-16.358477°","-49.510726°","Crescente","Goianira/Itauçú","2.0","Inhumas","80.0","40.0","REV","VEL","Traseira","Convencional","EX KOOP",""],["36.0","GO-070 km 039+806","070EGO0080","FSC110-0839","-16.358712°","-49.510950°","Decrescente","Itauçú/Goianira","2.0","Inhumas","80.0","40.0","REV","VEL","Traseira","Convencional","EX KOOP",""],["37.0","GO-070 km 047+436","070EGO0090","FSC110-0829","-16.294767°","-49.534905°","Decrescente","Itauçú/Inhumas","2.0","Inhumas","80.0","60.0","REV","VEL","Traseira","Convencional","EX KOOP",""],["38.0","GO-070 km 050+540","070EGO0090","FSC110-0830","-16.268394°","-49.546407°","Crescente","Inhumas/Itauçú","2.0","Inhumas","80.0","60.0","REV","VEL","Traseira","Convencional","EX KOOP",""],["39.0","GO-070 km 060+150","070EGO0090","FSC110-0831","-16.205393°","-49.597109°","Crescente","Inhumas/Itaberaí","2.0","Itauçú","80.0","40.0","REV","VEL","Traseira","Convencional","EX KOOP",""],["40.0","GO-070 km 060+216","070EGO0110","FSC110-0832","-16.205342°","-49.597526°","Decrescente","Itaberaí/Inhumas","2.0","Itauçú","80.0","40.0","REV","VEL","Traseira","Convencional","EX KOOP",""],["41.0","GO-070 km 060+690","070EGO0110","FSC110-0833","-16.202572°","-49.600823°","Crescente","Inhumas/Itaberaí","2.0","Itauçú","80.0","40.0","REV","VEL","Traseira","Convencional","EX KOOP",""],["42.0","GO-070 km 060+715","070EGO0110","FSC110-0834","-16.201864","-49.601973","Decrescente","Itaberaí/Inhumas","2.0","Itauçú","80.0","40.0","REV","VEL","Traseira","Convencional","EX KOOP",""],["43.0","GO-070 km 061+198","070EGO0110","FSC110-0835","-16.198848°","-49.603943°","Crescente","Inhumas/Itaberaí","2.0","Itauçú","80.0","40.0","REV","VEL","Traseira","Convencional","EX KOOP",""],["44.0","GO-070 km 061+933","070EGO0115","FSC110-0836","-16.193223°","-49.607221°","Decrescente","Itaberaí/Inhumas","2.0","Itauçú","80.0","40.0","REV","VEL","Traseira","Convencional","EX KOOP",""],["45.0","GO-070 km 070+594","070EGO0115","FSC110-0837","-16.128058°","-49.649879°","Crescente","Inhumas/Itaberaí","2.0","Itauçú","80.0","60.0","REV","VEL","Traseira","Convencional","EX KOOP",""],["46.0","GO-070 km 070+789","070EGO0130","FSC110-0838","-16.126803°","-49.651072°","Decrescente","Itaberaí/Inhumas","2.0","Itauçú","80.0","60.0","REV","VEL","Traseira","Convencional","EX KOOP",""],["51.0","GO-469 km 015+465","469EGO0020","FSC110-0873","-16.659192","-49.482765","Crescente","Trindade/Abadias de Goiás","2.0","Trindade","40.0","40.0","REV","VEL","Traseira","Convencional","NOVO",""],["52.0","GO-469 km 015+603","469EGO0025","FSC-4082","-16.660251","-49.482121","Decrescente","Abadias de Goiás/Trindade","1.0","Trindade","60.0","30.0","REV","VEL","Traseira","Convencional","NOVO",""],["53.0","GO-222 km 042+000","222EGO0030","FSC-4083","-16.382705°","-49.279987°","Ambos","Nerópolis/Nova Veneza\nNova Veneza/Nerópolis","2.0","Nova Veneza","80.0","40.0","REV","VEL","Traseira","Convencional","NOVO",""],["54.0","GO-060 km 188+800","060EGO0190","FSC110-0840","-16.311159°","-50.899565°","Decrescente","Iporá/Moiporá","1.0","Israelândia","80.0","60.0","REV","VEL","Traseira","Convencional","NOVO",""],["55.0","GO-060 km 188+500","060EGO0190","FSC110-0841","-16.309202","-50.897556","Crescente","Moiporá/Iporá","1.0","Israelândia","80.0","60.0","REV","VEL","Traseira","Painel Solar","NOVO",""],["68.0","GO-050 km 008+084","050UGO1120","FSC110-0852","-16.791786°","-49.940919°","Ambos","Palmeiras de Goiás / Palminópolis\nPalminópolis / Palmeiras de Goiás","2.0","Palmeiras De Goiás","80","60","REV","VEL","Traseira","Painel Solar","FISCAL",""],["74.0","GO-060 km 041+553","060EGO0040","FSC110-0853","-16.584404°","-49.700933°","Crescente","Trindade/Nazário","1.0","Santa Bárbara De Goiás","80","40","REV","VEL","Traseira","Convencional","FISCAL",""],["75.0","GO-060 km 041+961","060EGO0050","FSC110-0854","-16.582687°","-49.704035°","Decrescente","Nazário/Trindade","1.0","Santa Bárbara De Goiás","80","40","REV","VEL","Traseira","Convencional","FISCAL",""],["76.0","GO-060 km 049+729","060EGO0060","FSC110-0855","-16.564306","-49.771308","Ambos","Santa Bárbara de Goiás/Turvânia\nTurvânia/Santa Bárbara de Goiás","2.0","Nazário","60","40","REV","VEL","Traseira","Convencional","FISCAL",""],["77.0","GO-060 km 062+422","060EGO0080","FSC110-0856","-16.592210°","-49.88281","Ambos","Santa Bárbara de Goiás/Turvânia\nTurvânia/Santa Bárbara de Goiás","2.0","Nazário","60","40","REV","VEL","Traseira","Convencional","FISCAL",""],["78.0","GO-060 km 063+170","060EGO0080","FSC110-0857","-16.590582°","-49.889577°","Crescente","Santa Bárbara de Goiás/Turvânia","1.0","Nazário","60","40","REV","VEL","Traseira","Convencional","FISCAL",""],["79.0","GO-060 km 063+518","060EGO0090","FSC110-0858","-16.589923°","-49.892649°","Decrescente","Turvânia/Santa Bárbara de Goiás","1.0","Nazário","60","40","REV","VEL","Traseira","Convencional","FISCAL",""],["80.0","GO-060 km 090+637","060EGO0105","FSC110-0859","-16.607430°","-50.134580°","Ambos","Nazário/São Luís De Montes Belos\nSão Luís De Montes Belos/Nazário","2.0","Turvânia","80","40","REV","VEL","Traseira","Convencional","FISCAL",""],["83.0","GO-060 km 115+517","060EGO0135","FSC110-0860","-16.542394°","-50.348595°","Crescente","Turvânia/São Luís De Montes Belos","1.0","São Luís De Montes Belos","80","60","REV","VEL","Traseira","Convencional","PERKONS",""],["84.0","GO-060 km 119+224","060EGO0140","FSC110-0861","-16.528560°","-50.378611°","Crescente","Turvânia/Israelândia","2.0","São Luís De Montes Belos","80","40","REV","VEL","Traseira","Convencional","FISCAL",""],["85.0","GO-060 km 119+554","060EGO0140","FSC110-0862","-16.528890°","-50.381335°","Decrescente","Israelândia/Turvânia","2.0","São Luís De Montes Belos","80","40","REV","VEL","Traseira","Convencional","FISCAL",""],["86.0","GO-060 km 122+066","060EGO0170","FSC110-0863","-16.533845°","-50.404412°","Ambos","Turvânia/Israelândia\nIsraelândia/Turvânia","2.0","São Luís De Montes Belos","80","60","REV","VEL","Traseira","Painel Solar","FISCAL",""],["87.0","GO-060 km 155+393","060EGO0170","FSC110-0864","-16.464528°","-50.678035°","Ambos","São Luís De Montes Belos/Israelândia\nIsraelândia/São Luís De Montes Belos","2.0","Moiporá","80","60","REV","VEL","Traseira","Convencional","FISCAL",""],["99.0","GO-070 km 015+470","070EGO0020","FSC110-0865","-16.546057°","-49.403884°","Crescente","Goiânia/Inhumas","2.0","Goianira","80","40","REV","VEL","Traseira","Convencional","KOOP",""],["100.0","GO-070 km 015+576","070EGO0020","FSC110-0866","-16.544484°","-49.403715°","Decrescente","Inhumas/Goiânia","2.0","Goianira","80","40","REV","VEL","Traseira","Convencional","KOOP",""],["102.0","GO-070 km 038+057","070EGO0080","FSC-4102","-16.372213","-49.502982","Crescente","Goianira/Itauçu","2.0","Inhumas","60","40","REV","VEL","Traseira","Convencional","NOVO",""],["103.0","GO-070 km 038+465","070EGO0080","FSC110-0868","-16.369299°","-49.505278°","Crescente","Goianira/Itauçu","2.0","Inhumas","60","40","REV","VEL","Traseira","Painel Solar","NOVO",""],["104.0","GO-070 km 041+957","070EGO0080","FSC110-0876","-16.339978","-49.516578","Crescente","Goianira/Itauçu","2.0","Inhumas","80","60","REV","VEL","Traseira","Convencional","KOOP",""],["105.0","GO-070 km 045+316","070EGO0090","FSC110-0870","-16.311191","-49.525452","Decrescente","Itauçu/Goianira","2.0","Inhumas","80","80","CEV","VEL","Traseira","Painel Solar","KOOP",""],["106.0","GO-070 km 077+414","070EGO0130","FSC110-0871","-16.097614°","-49.704051°","Crescente","Itauçu/Goiás","2.0","Itaberaí","110/90","110/90","CEV","VEL","Traseira","Painel Solar","KOOP",""],["107.0","GO-070 km 077+693","070EGO0130","FSC110-0872","-16.096902","-49.706707","Decrescente","Goiás/Itauçu","2.0","Itaberaí","110/90","110/90","CEV","VEL","Traseira","Painel Solar","KOOP",""],["110.0","GO-217 km 081+550","217EGO0077","FSC110-0867 C / FSC110-0869 D","-17.281659","-49.396044","Ambos","Professor Jamil/Mairipotaba\nMairipotaba/Professor Jamil","4.0","Cromínia","80","40","REV","VEL","Traseira","Convencional","NOVO",""],["114.0","GO-156 km 090+380","156EGO0170","FSC110-0874","-16.374468°","-49.964847°","Decrescente","Nazário/Americano do Brasil","1.0","Anicuns","80","80","CEV","VEL","Traseira","Painel Solar","NOVO",""],["115.0","GO-156 km 090+000","156GO0140","FSC110-0875","-16.377260","-49.964090","Crescente","Americano do Brasil/Nazário","1.0","Anicuns","80","80","CEV","VEL","Traseira","Painel Solar","NOVO",""],["117.0","GO-040 km 020+722","040EGO0015","FSC110-0880","-16.844406","-49.401736","Crescente\nDecrescente","Goiânia/Hidrolândia\nHidrolândia/Goiânia","2.0","ARAGOIÂNIA","80 km/h","80 km/h","CEV","VEL","Traseira","Convencional","","KM 20 + 722M"],["118.0","GO-040 km 025+388","040EGO0015","FSC110-0881","-16.870125","-49.434442","Crescente\nDecrescente","Goiânia/Hidrolândia\nHidrolândia/Goiânia","2.0","ARAGOIÂNIA","80 km/h","80 km/h","CEV","VEL","Traseira","Painel Solar","","KM 25 + 388M"],["119.0","GO-040 km 030+384","040EGO0025","FSC110-0882","-16.912167°","-49.451094°","Crescente","Goiânia/Hidrolândia","2.0","ARAGOIÂNIA","80 km/h","60 km/h","REV","VEL","Traseira","Convencional","","KM 030 + 384M"],["120.0","GO-040 km 032+618","040EGO0030","FSC110-0883","-16.9261","-49.4442","Crescente","Goiânia/Hidrolândia","1.0","ARAGOIÂNIA","60 km/h","40 km/h","REV","VEL","Traseira","Convencional","","KM 32 + 618M"],["121.0","GO-040 km 032+753","040EGO0030","FSC110-0884","-16.926874°","-49.443386°","Decrescente","Hidrolândia/Goiânia","1.0","ARAGOIÂNIA","60 km/h","40 km/h","REV","VEL","Traseira","Convencional","","KM 32 + 753M"],["122.0","GO-040 km 040+255","040EGO0040","FSC110-0885","-16.986642°","-49.429706°","Crescente\nDecrescente","Goiânia/Hidrolândia\nHidrolândia/Goiânia","2.0","ARAGOIÂNIA","80 km/h","40 km/h","REV","VEL","Traseira","Convencional","","KM 40 + 255M"],["123.0","GO-050 km 000+016","050UGO1100","FSC110-0886","-16.833731°","-49.879893°","Crescente\nDecrescente","Cezarina/Palmeiras de Goiás\nPalmeiras de Goiás/Cezarina","2.0","PALMEIRAS DE GOIÁS","80 km/h","60 km/h","REV","VEL","Traseira","Painel Solar","","KM 0 + 16M"],["130.0","GO-070 km 088+826","070EGO0135","FSC110-0887","-16.046284°","-49.789495°","Decrescente","Goiás/Itauçu","2.0","ITABERAÍ","80 km/h","40 km/h","REV","VEL","Traseira","Convencional","","KM 88 + 826M"],["131.0","GO-070 km 088+831","070EGO0135","FSC110-0888","-16.046661°","-49.789218°","Crescente","Itauçu/Goiás","2.0","ITABERAÍ","80 km/h","40 km/h","REV","VEL","Traseira","Convencional","","KM 88 + 831M"],["132.0","GO-070 km 089+106","070EGO0135","FSC110-0889","-16.044196°","-49.790458°","Crescente","Itauçu/Goiás","2.0","ITABERAÍ","80 km/h","40 km/h","REV","VEL","Traseira","Convencional","","KM 89 + 106M"],["133.0","GO-080 km 064+015","080EGO0112","FSC110-0890","-16.106399°","-49.334313°","Decrescente","São Francisco de Goiás/Damolândia","2.0","PETROLINA DE GOIÁS","80 km/h","40 km/h","REV","VEL","Traseira","Convencional","","KM 64 + 15M"],["134.0","GO-080 km 064+033","080EGO0112","FSC110-0891","-16.106684°","-49.334434°","Crescente","Damolândia/São Francisco de Goiás","2.0","PETROLINA DE GOIÁS","80 km/h","40 km/h","REV","VEL","Traseira","Convencional","","KM 64 + 33M"],["135.0","GO-080 km 075+271","080EGO0140","FSC110-0892","-16.013201°","-49.295782°","Crescente","Damolândia/São Francisco de Goiás","2.0","PETROLINA DE GOIÁS","80 km/h","60 km/h","REV","VEL","Traseira","Painel Solar","","KM 75 + 271M"],["136.0","GO-080 km 075+922","080EGO0140","FSC110-0893","-16.0072","-49.2947","Decrescente","São Francisco de Goiás/Damolândia","2.0","PETROLINA DE GOIÁS","80 km/h","60 km/h","REV","VEL","Traseira","Painel Solar","","KM 75 + 922M"],["137.0","GO-080 km 085+373","080EGO0145","FSC110-0894","-15.9335","-49.2581","Crescente","Petrolina de Goiás/Jaraguá","2.0","SÃO FRANCISCO DE GOIÁS","80 km/h","40 km/h","REV","VEL","Traseira","Convencional","","KM 85 + 373M"],["138.0","GO-080 km 085+378","080EGO0145","FSC110-0895","-15.9335","-49.2583","Decrescente","Jaraguá/Petrolina de Goiás","2.0","SÃO FRANCISCO DE GOIÁS","80 km/h","40 km/h","REV","VEL","Traseira","Convencional","","KM 85 + 378M"],["139.0","GO-154 km 122+754","154EGO0110","FSC110-0896","-16.0551","-49.6122","Crescente","Itauçu/Itaguari","1.0","TAQUARAL DE GOIÁS","80 km/h","40 km/h","REV","VEL","Traseira","Convencional","","KM 122 + 754M"],["140.0","GO-154 km 123+035","154EGO0130","FSC110-0897","-16.0526","-49.6116","Decrescente","Itaguari/Itauçu","1.0","TAQUARAL DE GOIÁS","60 km/h","40 km/h","REV","VEL","Traseira","Convencional","","KM 123 + 35M"],["141.0","GO-154 km 136+922","154EGO0150","FSC110-0898","-15.9291","-49.6052","Crescente\nDecrescente","Taquaral de Goiás/Itaguaru\nItaguaru/Taquaral de Goiás","2.0","ITAGUARI","60 km/h","40 km/h","REV","VEL","Traseira","Convencional","","KM 136 + 922M"],["143.0","GO-164 km 447+625","164EGO0500","FSC110-0899","-16.133","-50.234","Crescente","Sanclerlândia/Goiás","1.0","MOSSÂMEDES","60 km/h","60 km/h","CEV","VEL","Traseira","Painel Solar","","KM 447 + 625M"],["144.0","GO-164 km 448+196","164EGO0500","FSC110-0900","-16.1313","-50.2296","Decrescente","Goiás/Sanclerlândia","1.0","MOSSÂMEDES","60 km/h","60 km/h","CEV","VEL","Traseira","Painel Solar","","KM 448 + 196M"],["145.0","GO-164 km 461+174","164EGO0510","FSC110-0901","-16.0963","-50.1242","Crescente\nDecrescente","Sanclerlândia/Goiás\nGoiás/Sanclerlândia","2.0","MOSSÂMEDES","60 km/h","60 km/h","CEV","VEL","Traseira","Painel Solar","","KM 461 + 174M"],["147.0","GO-222 km 046+224","222EGO0035","FSC110-0902","-16.366820°","-49.320268°","Crescente","Nerópolis/Brazabrantes","1.0","NOVA VENEZA","40 km/h","40 km/h","CEV","VEL","Traseira","Convencional","","KM 46 + 224M"],["148.0","GO-222 km 046+257","222EGO0050","FSC110-0937","-16.366333°","-49.321051°","Decrescente","Brazabrantes/Nerópolis","1.0","NOVA VENEZA","40 km/h","40 km/h","CEV","VEL","Traseira","Convencional","","KM 46 + 257M"],["149.0","GO-222 km 055+863","222EGO0050","FSC110-0903","-16.3488","-49.406","Crescente","Nova Veneza/Inhumas","1.0","BRAZABRANTES","80 km/h","60 km/h","REV","VEL","Traseira","Convencional","","KM 55 + 863M"],["150.0","GO-222 km 056+446","222EGO0050","FSC110-0904","-16.3488","-49.4114","Decrescente","Inhumas/Nova Veneza","1.0","BRAZABRANTES","80 km/h","40 km/h","REV","VEL","Traseira","Convencional","","KM 56 + 446M"],["151.0","GO-222 km 066+463","222EGO0090","FSC110-0905","-16.3428","-49.5024","Decrescente","Itauçu/Brazabrantes","2.0","INHUMAS","80 km/h","40 km/h","REV","VEL","Traseira","Convencional","","KM 66 + 463M"],["155.0","GO-326 km 007+916","326EGO0010","FSC110-0906","-16.5137","-49.8238","Crescente","Nazário/Anicuns","1.0","AVELINÓPOLIS","80 km/h","60 km/h","REV","VEL","Traseira","Painel Solar EX","","KM 7 + 916M"],["156.0","GO-326 km 008+210","326EGO0030","FSC110-0907","-16.5121","-49.8261","Decrescente","Anicuns/Nazário","1.0","AVELINÓPOLIS","80 km/h","60 km/h","REV","VEL","Traseira","Painel Solar EX","","KM 8 + 210M"],["166.0","GO-568 km 002+220","568EGO0015","FSC110-0908","-17.115","-49.9849","Crescente","Indiara/Palmeira de Goiás","1.0","INDIARA","80 km/h","80 km/h","CEV","VEL","Traseira","Painel Solar","","KM 2 + 220M"],["167.0","GO-568 km 002+393","568EGO0015","FSC110-0909","-17.1136","-49.9844","Decrescente","Palmeira de Goiás/Indiara","1.0","INDIARA","80 km/h","80 km/h","CEV","VEL","Traseira","Painel Solar","","KM 2 + 393M"],["168.0","GO-070 km 085+350","070EGO0135","FSC110-0910","-16.069521°","-49.768887°","Decrescente","Itaberaí/Itauçu","2.0","ITABERAÍ","80 km/h","80 km/h","CEV","VEL","Traseira","Painel Solar","","KM 085 + 350M"],["170.0","GO-070 km 039+200","070EGO0080","FSC110-0911","-16.364175°","-49.508822°","Crescente","Goianira/Itauçu","2.0","INHUMAS","60 km/h","40 km/h","REV","VEL","Traseira","Convencional","","KM 039 + 200M"],["171.0","GO-060 km 091+980","060EGO0110","FSC110-0912","-16.607585°","-50.146074°","Crescente\nDecrescente","Nazário/Firminópolis\nFirminópolis/Nazário","2.0","TURVÂNIA","80 km/h","60 km/h","REV","VEL","Traseira","Convencional","","KM 091+980M"],["172.0","GO-060 km 089+000","060EGO0100","FSC110-0913","-16.6061","-50.1197","Crescente\nDecrescente","Nazário/Firminópolis\nFirminópolis/Nazário","2.0","TURVÂNIA","80 km/h","80 km/h","CEV","VEL","Traseira","Painel Solar","","KM 089+000M"],["182.0","GO-050 km 063+790","050EGO0080","FSC110-0915","-16.828523","-49.837254","Crescente\nDecrescente","Campestre de Goiás/Palminópolis\nPalminópolis/Campestre de Goiás","2.0","Palmeiras de Goiás","80.0","60.0","REV","VEL","Traseira","Convencional","",""],["183.0","GO-050 km 139+018","050EGO0170","FSC110-0916","-16.819182","-50.406512","Crescente","Palminópolis/Paraúna","1.0","São João da Paraúna","80.0","40.0","REV","VEL","Traseira","Painel Solar","",""],["184.0","GO-050 km 139+215","050EGO0170","FSC110-0917","-16.820149","-50.408064","Decrescente","Paraúna/Palminópolis","1.0","São João da Paraúna","80.0","40.0","REV","VEL","Traseira","Convencional","",""],["186.0","GO-156 km 081+565","156EGO0160","FSC110-0918","-16.447797°","-49.951527°","Crescente\nDecrescente","Nazário/Americano do Brasil\nAmericano do Brasil/Nazário","2.0","Anicuns","80.0","60.0","REV","VEL","Traseira","Convencional","",""],["187.0","GO-162 km 040+914","162EGO0040","FSC110-0919","-16.8872","-50.1598","Crescente\nDecrescente","Jandaia/Palminópolis\nPalminópolis/Jandaia","2.0","Palminópolis","80.0","60.0","REV","VEL","Traseira","Painel Solar","",""],["190.0","GO-164 km 402+183","164EGO0440","FSC110-0920","-16.475683","-50.388625","Crescente\nDecrescente","Firminópolis/Sanclerlândia\nSanclerlândia/Firminópolis","2.0","São Luís de Montes Belos","80.0","60.0","REV","VEL","Traseira","Convencional","",""],["191.0","GO-164 km 449+305","164EGO0505","FSC110-0921","-16.134128°","-50.219489°","Crescente\nDecrescente","Sanclerlândia/Itaberaí\nItaberaí/Sanclerlândia","2.0","Mossâmedes","60.0","40.0","REV","VEL","Traseira","Convencional","",""],["192.0","GO-164 km 460+613","164EGO0510","FSC110-0922","-16.099784","-50.128025","Crescente","Sanclerlândia/Itaberaí","1.0","Mossâmedes","80.0","60.0","REV","VEL","Traseira","Convencional","",""],["193.0","GO-164 km 461+706","164EGO0510","FSC110-0923","-16.092988","-50.120584","Decrescente","Itaberaí/Sanclerlândia","1.0","Mossâmedes","80.0","60.0","REV","VEL","Traseira","Convencional","",""],["205.0","GO-512 km 009+152","512EGO0020","FSC110-0924","-16.467191","-49.755691","Crescente\nDecrescente","Anicuns/Araçu\nAraçu/Anicuns","2.0","Avelinópolis","60.0","40.0","REV","VEL","Traseira","Convencional","",""],["211.0","GO-060 km 119+000","060EGO0140","FSC110-0925","-16.530010","-50.36775","Crescente","Firminópolis/Aurilândia","2.0","São Luís de Montes Belos","60.0","60.0","CEV","VEL","Traseira","Convencional","",""],["212.0","GO-060 km 119+000","060EGO0140","FSC110-0926","-16.530010","-50.36775","Decrescente","Aurilândia/Firminópolis","2.0","São Luís de Montes Belos","60.0","60.0","CEV","VEL","Traseira","Convencional","",""],["213.0","GO-060 km 120+000","060EGO0140","FSC110-0927","-16.528145°","-50.375070°","Crescente","Firminópolis/Aurilândia","2.0","São Luís de Montes Belos","80.0","40.0","REV","VEL","Traseira","Convencional","",""],["214.0","GO-060 km 120+050","060EGO0140","FSC110-0928","-16.528398°","-50.376479°","Decrescente","Aurilândia/Firminópolis","2.0","São Luís de Montes Belos","80.0","40.0","REV","VEL","Traseira","Convencional","",""],["215.0","GO-060 km 121+000","060EGO0140","FSC110-0929","-16.529318°","-50.385079°","Crescente","Firminópolis/Aurilândia","1.0","São Luís de Montes Belos","40.0","40.0","REV","VEL","Traseira","Convencional","",""],["216.0","GO-060 km 121+050","060EGO0140","FSC110-0930","-16.529490°","-50.386424°","Decrescente","Aurilândia/Firminópolis","1.0","São Luís de Montes Belos","40.0","40.0","REV","VEL","Traseira","Convencional","",""],["217.0","GO-060 km 121+500","060EGO0150","FSC110-0931","-16.530144°","-50.391237°","Decrescente","Aurilândia/Firminópolis","1.0","São Luís de Montes Belos","40.0","40.0","REV","VEL","Traseira","Convencional","",""],["218.0","GO-060 km 124+350","060EGO0170","FSC110-0932","-16.537832°","-50.413858°","Crescente","Firminópolis/Aurilândia","1.0","São Luís de Montes Belos","80.0","80.0","CEV","VEL","Traseira","Painel Solar","",""],["219.0","GO-060 km 124+500","060EGO0170","FSC110-0933","-16.538852°","-50.415762°","Decrescente","Aurilândia/Firminópolis","1.0","São Luís de Montes Belos","80.0","80.0","CEV","VEL","Traseira","Painel Solar","",""],["220.0","GO-164 km 406+700","164EGO0430","FSC110-0934","-16.502007°","-50.388825°","Crescente","Firminópolis/Sanclerlândia","1.0","São Luís de Montes Belos","60.0","40.0","REV","VEL","Traseira","Convencional","",""],["221.0","GO-164 km 407+000","164EGO0430","FSC110-0935","-16.50490°","-50.38912°","Decrescente","Sanclerlândia/Firminópolis","1.0","São Luís de Montes Belos","60.0","40.0","REV","VEL","Traseira","Convencional","",""],["227.0","GO-417 km 018+850","417EGO0050","FSC110-0936","-16.668012°","-50.455116°","Crescente    Decrescente","Cachoeira de Goiás/São Luiz de Belos Montes São Luiz de Belos Montes/Cachoeira de Goiás","2.0","Aurilândia","60.0","60.0","CEV","VEL","Traseira","Convencional","",""]]};
+  var ROADS = {"GO-040":["~tgeBbvclHpXb[","p}ieB|welHaRsG","`bjeB~zelHr[jD","diieBhoelHvSvI","xoheBrsdlHpOdQ","voheBxpdlHm]a_@","r~feBb}blHjU~W","ppfeBllblHyCmF","|ifeBlfblH|O`R","xhfeBtdblH??","trdfBjcxlHbjAj~@","~vseBtwhlHzj@ro@","hqgeBvpclHkTcV","|~jeBt}elHq[uD","dbleB|fflHbg@nG","bkoeBh`glHaa@}K","pjmeBjmflHgg@iG","nfneBxrflHeXaD","`mmeBtoflH~WbD","`akeBr`flHd]zD","x_leBndflHg]gE","faieBfdelH_O{P","fkmeB|lflH}h@wG","|aleBfgflHne@dF","fdjeB`{elHvVjC","rlmeBbpflHbW~B","bgneBlrflHaWsC","nlreBxghlHq[wF","tpoeBhgglHv@|@","nmqeBh_hlHqw@oT","|oqeB``hlHmAW","zhneBbuflHvc@vM","~mqeB`_hlHiNaC","lroeBfiglHdOpKji@zJ","|useBnthlHmh@uK","|useBnthlHUp@","~vseBtwhlHp@k@","vbzeBrfqlHczAknB","nonhBlmnlH[y@","denhBjznlHZf@","`nnhBzgnlHaFjP","nmnhBnnnlHvAS","npciB`oklHpc@{KzX_YdQk@pjBj]fzBt|B~e@fHh^kBbz@~GbcC~j@rbDgR","~fnhBfynlHy@b@","denhBjznlHsaA_MuO~A{cGthDssB}Io|D`oAgSi@yv@yT}|Bjb@ij@c]_zCa|Cs_@qG","r{}eBhcvlHbB\\","dcmfB~htlHv@]","jdmfBjgtlHe@r@","dcmfB~htlHif@ju@_aBz`Asz@``A","lfmfBzgtlH`AP","nhmfBlhtlHu@s@","`ephBnejlHoC}@","vc|iBz{ulH_B`q@","ba|iB~mwlHrAcq@","`b|iBl~tlHoEi`A__@{e@kDef@","tcfjB`evlHe@Z","`|bjBpcwlHyd@MgmApV","jbveBpkklHmi@_p@","|wteBpzilHgAuA","tuteBzwilHkPsS","xcveBfmklHm@u@","drphBppjlHaK}I","reveBppklHy@iB","lbveBhnklHdBfA","`fnhBr{nlHiAxD","rnnhBrknlH^sA","penhBfbolH|FwR","haveBpmklHb@V","~lqeBtahlHjAL","psoeBxgglHw@q@","bfmfBvetlHw@r@","xqoeBffglHc@`@","`~ieBjwelH`DbBaDcB","hbleB`eflH??","pjmeBjmflH??","nfneBxrflH??","faieBfdelH??","lroeBfiglHb@m@","voheBxpdlH??","nmqeBh_hlHOjA","lbveBhnklHj@a@","joqeBbbhlHPaA","jbveBpkklHa@~@","pakeBf~elH??","x}ffBvbzlHLM","trdfBjcxlHsq@wUu}Cyf@","vbzeBrfqlHjClD","zsxhBhsolHv@p@","fz}eBvbvlH__BirAcRkbA","fpnhBzmnlHf_@ZfnAzZri@uZhRmC`fB~e@bn@x@","jdmfBjgtlHPT","lfmfBzgtlHJa@","xfmfBxftlHUa@","|dmfB`htlHn@E","rc|iBntulHCy@","vc|iBz{ulHCkF","f~ffBhbzlHqjA}}@","|uziBhkplHPQ","bqziBnjplHzAN","tuziBlhplHk@F","vsziBjiplHsAb@","xmveBthllHeGcW","bnveBdjllHIo@","zbueBhhjlHhAvA","deueB`kjlH~Z`a@","~aweBtpmlH{Roe@","~cweB|rmlH_AgA","zeweB`umlH{@cA","rgweBfwmlHw@eA","v~}eBfdvlHrAP","fz}eBvbvlHj@P","bgzeB`lqlHkCmD","lb|iBdculHCe@","hb|iB~aulHCiA","db|iBt_ulHCg@","nc|iBtrulHa@oN","r__jBd}wlHoRjAkjAsP","~g_jBtzwlHk@J","rf_jB`{wlH_FbA","fpnhBzmnlHWM","d~bjBrcwlHcAA","nbfjB|evlHuYfPshAlK","hh}hB`_nlHfAcA","ruxhBztolHlLtElt@eBxnAix@","znciBroklHr@Q","pj}hB||mlHbl@s\\dvCun@","~iieBxnelHaFyG","vaieB|felHlFjG","fuseB`vhlHv@r@","joqeBbbhlHzdA|R","pxseBhvhlHsAy@","hdteBfcilHwJ}K","|{feBryblHkJeL","zzfeBnyblHvBrB","|toeBxiglHk@_A","rmoeBzcglH`BlB","xqoeBffglHuE}D","njieBhoelHOO","rglgBvfplH{sBvHg|ArdBwjD`|A}h@be@}vDtx@yo@qG{SaKcb@i`Asn@ky@qRoAue@|Ha}BiJsm@kU","|ilgBtfplHiA@","tcfjB`evlHxl@{`@xwC{k@vo@pYj|@kM","`omeBxmflH[A","htziBthplHJvA","jvziBzhplHUM","ttziBlkplHf@C","nvziBvjplHC{@"],"GO-164":["ddl`Bvc~pH}Yw@","lge_BfvcqHio@ld@uLxR","`lf`Bpo_qHqZ~BgS_f@gTwUym@{Ois@m_A","~{g`Bnz~pHmh@`P","xyhaBbc_qHqhE_bF_`DipCooAybCocCao@{_AcnA","rhlaBzmlqHlVn^`In`@","rhlaBzmlqHs@y@","lflaBpmlqHdAH","l|maBxwnqHbHp^eQ|eAno@l`@`IpX","vooaB~}sqHvHlWnpA|~Ady@rwA","|moaBhysqHx@tC","dkmaBppnqHa@u@","detaB~nzqH`AvA","bjmaBznnqH?x@","rfvaB`h~qHvo@f^v`@fl@","|s_bBti`rH~Vlg@ht@ds@|\\hj@fqA`s@|iB`d@rgArd@pdB|d@","nt}aBh~~qHlWxP","dm~aBdn_rH{UcP","tcgdB`u_rHsOsGgdAcH","l~}gB`esrHglHx}AusEoj@}yEf}@_TzLg{@x`AozC~sBsrCfoAgy@{Ky_@ec@kl@s]op@cnAu~Aor@","t{deBbperHyn@s]wqBrXyTqBe`Aym@snAsyBus@aS","fiteBvqtrH??","xgteBlotrH^xA","~nteBtrtrHiCW","|jteBlstrH`CW","njteBvqtrHoBaC","xgteBlotrHi@jB","~wofBxywrH~AN","~nteBtrtrHduAeD`lBjE~xA~U|s@he@~gAjSrGvKlNdqAhSle@jy@tmApa@nSj{@oKpy@m_@fi@gDz`@}^","h{kfBz{{rHnZdB","lrmfBhy{rHsXlC","~zofBhzwrHJH","tgpfBrwwrHz~@r`@","tgpfBrwwrHiK~A","~zofBhzwrH_AaA","d{haBrd_qHvl@zm@tVbf@~G`fApo@blDaGno@","xyhaBbc_qHj@n@","~wzaB`oarHOA","~|deBbqerHi@_@","vkojB~mnsHog@mqAoQkNw}Haq@","~|idB`z_rHegAc@","~qcjBbzisH}Fy@","~ncjBb~isH~A_C","pnh`Bds~pHwD~A","tuh`Brp~pHhD{@","hsh`Blq~pHjAY","~zh`Bvn~pHj^oI","pmf`Bvn_qHo@X","~of`Bdm_qHmAp@","prf`Bpk_qHqAr@","f{i`Bxc~pH[F","x}i`B`c~pHqAV","l`j`Bdb~pHsAZ","zaj`Bza~pHQD","~gc_BrqeqHsYhh@{k@fl@chCff@qmAjc@","lic_BnoeqHm@bA","zj{cB|pprHhAL","~l{cBfpprHcAT","b{j`B~}}pHgXzB","jyt`BxkkpHqBeG","rut`BllkpHvBS","nwzaB~narHso@iP","nfyaBx~`rH??","pgrfBfyxrHc~@y`@","xxlfBv}{rHk@L","lwlfBd~{rHc[}B","xvlfB`_|rHXE","rwlfBz~{rHtYmC","vik`Brc~pHfXh@","t_ycBtwprHre@mB","f|kcB|aprHt@J","rmnbBpvirHrpB~N`zCeDxdFrOlgFrnAxcBvaAllAjT","pjnbBhvirH`BF","~aa`Bhb{pHyw@k~@oy@vFq]sWwI_Zuz@it@a`@yAwhAlW_]rz@cb@tTc\\~f@eo@l\\ql@lKs{AhGyiBxdAaMT","zca`Bnd{pH{@eA","~fteBtmtrHXv@","z~jcBvzorHxBZ","f|jcBdzorHrAP","lzpcBdpprHvA@","|}kcBhbprHfw@bLfcBV","vqseBtfsrHo@wA","~fteBtmtrHgT_f@","|kaiBbeorH{AG","|naiBdeorH_BA","vqaiBxdorHyAJ","fwciBnporHsT_J{n@U","ha~gBbdsrH{A\\","`iaiBzdorHkiR{Qk|NbqC","dgk`Btb~pHpA\\","b{j`B~}}pH`KtC","fpseB|csrHe~@cjB}_D{~@ohB_uAgeA{mBkbA}aA","jzwcBryprHh@B","pwwcBdyprHxAL","~twcBxxprHpAJ","d}pcBfpprHjhDf@lm@hF","tbkcBr{orHpXhE","tzyaBhgarHx[tF","jcu~AphmqHsu@fi@{}@bZiYhRekAxMsi@bU","hevaBrf~qHh@l@","fgtaBvqzqHvo@x{@fCjg@`HtN","xmddBhc_rHk@q@","vkddBpc_rH`AG","tcgdB`u_rHTZ","vdgdBfu_rHa@E","`ggdBdw_rHYc@","vegdBxv_rHh@J","`r_bBxf`rHz@zA","py~aBjs_rHnWlR","~{e~AphvqHoAj@","b{l~AdgqqHwsAzo@qy@rbAynAzk@","v|l~AdfqqHs@^","~fz~ArtjqHslBzq@_u@``@","xhz~AxsjqHy@X","p`j`Bjb~pHVI","haj`B`b~pH[B","|}i`Bdc~pHrAY","d{i`B`d~pHvA[","jzi`Bfd~pHXE","jzi`B`d~pHm^nI","|zh`Bpn~pHiDv@","ruh`Bhp~pH}@T","tsh`B~p~pHcDdA","pnh`Bds~pHvCw@","v}g`Bfz~pHw@F","xhh`Bdv~pHaJ`C","byxaBpt`rHp`@vQ","zdyaBj|`rHwJyF","vn~aBxp_rHxIpA","xl~aBzn_rHzA^","to~aBzo_rH{A_@","t{wcBvyprH~b@aA","xtgdB|x_rHwLw@","jal`Bje~pHPa@","b`l`Bve~pHbAz@","py~aBjs_rHyHgC","xfzcBftprH`c@iB","hfzcBftprHN?","xzjcBvyorHl@L","`ij_Brh~pHaR`@_e@f`@ms@`vAcs@fs@","jmj_Bji~pHiCW","luwdBly_rHkVbDceBcN{iA_Uab@}W}Q_CayDp|@","x}xdB`j_rHkg@jN"],"GO-156":["hcw`Bz_~nHpDlD","|oncBhw{oH}M}C","`ecdBxx~oH}iBhMmf@oLwjChV}gAut@oZoD{I~E","pkqeBntuoHfBkD","tqqeBviuoHt`@kw@","vepeBzlwoHok@tq@","zbqeB~gvoHhJcP","~c__Bv~aoHwi@vH","jq{~AjxboH}}@pImdCw^{}AzF_z@_LgxAuCsXfYcg@j@iVnTet@xMul@ty@","tkx_Bpt|nHi@f@","zld`Bvt{nHoEH","jjx_Bxu|nHg[vQabEb[mlAiPa_Dau@mnAnx@q`@~k@w_Atj@yfDfn@","pu|~AlpboH__@`F","fy}~A`iboHvi@iI","~~xfBd{xnHJcK","ntreBdpsoHpYml@","voneBzbyoHgtIgyAipGxm@u_CuoAgvAsDmoDel@urAqh@","ntneBzayoHeBX","dhgdBviooHYnB","lhgdBfmooHjAP","xjgdBxmooHe@mA","hsreBjosoHd@X","rrreBvpsoHkc@`}@","xjqeB|uuoH_DbK","hnseBnbroHsYzk@","lzweB|}koHhiDacExnF_iD|iBstBtv@yVzrA_z@","bdteBv~poHf@eA","jateBjcqoH^y@","p`teBbeqoHXw@","jbteBpaqoHv@yA","xslfBddznHxbCme@","jplfBteznHlBo@","xslfBddznH}AW","`pseB`aroHnO}Z","v}xfBrnxnHLrK","j`rfBluunHynDrlC","buucBtc}oH|]vOpBhG","jtucBnc}oHexAk^kb@aXc_@aEiOrD","j~lcBll{oHgAC","b|lcBhl{oHyj@yE","vnjcBlvzoH{a@{N","plecBvizoHaAj@","x{sbBlcapHkY~Ruj@fPsjBt{@_s@aGmn@{Rk|@gH","p}sbBraapHw@x@","biicBjezoHq]gLao@eF}l@xW","njecBbkzoHiY`O}uBx[}hBb|@g}ChMu`Bfm@yp@|n@","zkicBpfzoHwAe@","b`ncBhr{oHZ@","p~mcBlq{oH\\L","p~mcBlq{oHe_@_D","nps`Bll{nHbaBzcA","rpt`Bp~{nHc_@cQ","zbqeB~gvoH_F|G","nipeBphwoHdQwU","t_w`Bb|}nHaLyI","`gocBh_|oHeD|A","`nocBb{{oH_FdC","jgpcBrj{oHiXnO","h_yfB`~xnHI{A","h}xfBh|xnH{@d@","l{xfBn}xnHdAD","borfB`hxnHk]tJ","|prfBvhxnHy@U","fqqfB~txnHd]yJ","rwpfBv}xnH~X}F","vgsfBdjxnHbaDxUpPoB","hms`B`l{nHypBh]onC{^wyC~E","pfzaBnb_pHiBS","pazaBn~~oHt@jB","pazaBn~~oHik@ap@}Y{m@{jBygBm]am@wDua@mQiZswAyo@ca@{[tAki@_a@y{@{a@{RcOy`@awAi}@","xdzaB``_pHgBq@","pfzaBnb_pH|@kB","ndzaBpc_pH`Aa@","fczaBza_pHf@t@","triaBx`loH}v@~BuiAhU{m@}Neo@giAiiBojAwn@bAsSaEwp@}p@ciAk]o]ms@","fqf`Bnq{nHkcAfB","`k~_Bz{{nHylA{_@oi@o@aNhE_w@vs@","`d|cB~odpHwh@}CkcAub@iu@}FxDatByLsl@","vepeBzlwoHvBiC","f{peBlqvoHaQxU","hex`BplcoHrAD","b|g~AlveoHs]fp@","nyfbBrxapHysAyh@","tddbBxn`pHe_Cs{@irAhQwnAkS}W~M","|gx`BvlcoH{A{E","`brfB~sunHu@l@","~drfBrqunH}AjA","|frfBfpunH}@j@","n_tfBvbtnHqw@nl@","hnlfBzdznHfAy@","`klfBlgznHfBqA","h{veBtamoH`AkA","~xveBjdmoHhAuA","nwveB`fmoHn@u@","jeteBp|poHvl@kkAjc@ci@","jggdBfmooHXoB","bmldBjjroHkAi@","vjldB`iroHapBsx@{m@s`@","fyneBp_yoHwChA","hqneBtbyoHq@D","p`teBbeqoHgQj\\","r_ncBrq{oHa@E","~`ncBjr{oHWK","jikcBfb{oHsYyJ","|kkcBjc{oHqAc@","rnkcBrd{oHuAg@","hpkcBne{oHu@[","nhzaBb__pHcB\\","|~vcBfxgpH\\E","|}g~A~seoHy@lA","vu}~AziboHnBY","pu|~AlpboHd_@qE","ru}~AfiboHa_@dF","fy}~AnhboHsBV","nps`Bll{nHeBK","tddbBxn`pHxsAxh@","`oseBvbroH^u@","ntreBdpsoHe@Y","dipeBfhwoHmBrC","xeqeB`bvoHmBlD","rrv`Bhq}nH_aAwq@","z{peB|pvoHSN","t{peBxqvoHD[","d~xfBf{xnHF|A","h}xfBh|xnHb@z@","~~xfBd{xnHY@","l~xfBd~xnHZC","rqqfBxuxnHKY","lorfBdixnHn@M","fqqfB~txnHOg@","~fsfBbjxnHV@","|prfBvhxnH`Uj@","d~xfBf{xnH[`@","jbqeBngvoHNN","n}f~AtggoH{~A~hDg|@tm@aL`W","`m~_Bv|{nH_A[","jfd`B`u{nHixDtF","dnqeBzvuoHsAkA","nxweBd`loH|@gA","vgweBrsloHvOmR","j}veBh_moH~HgJ","jgweB`tloHJM","fnqeBxnuoHuAtD","xnqeBbouoHzAkD","t_w`Bb|}nHrBvB","lrbdBfmbpH{oChk@_q@|VoJo@","hiibBd`cpHynAqf@"],"GO-080":["zc`_B|i`lHm}@eZ","rzdaBty`lHiFeB","joj~A`h{kHy@_@","pmj~A`g{kHqj@uBsy@mQqm@i_@cZvDkm@kGmaA`B","na~~Avl_lHixCshBshDvQ","le~~Avn_lH}B_A","hn`_Bvj`lHyCG","zc`_B|i`lH~@hA","jeacBfnlkHhvCiL","x`fcBv~kkHkAc@","hv{aBpk~kHbAe@","h_ocBl{ikHvm@fJn|B|t@h}BmRxsAlu@~dBn`@hm@|s@~dAnf@pfC|@","paiaBpvblH~eC|k@xh@`FbqAcB","z`gaBdzalHdp@jU","vaiaB`vblHaK{C","|x|bBxzmkHqcBpcBq}@dwAw_@zWsXcA","jh_`Bl|okHhjE``Cfv@iFv`ApN","bzfaBnvalHo~@y[","hsdaBnv`lHckDajAun@oe@{vBkO","boabB~z{kHpq@p@hUjHpW_AxnAbO`nBiv@la@oi@","t|ecB|`lkHb@f@","l~ecBr}kkHs@b@","x|ecBv~kkHGP","x}ecBdblkHfBg@","ndqaBlgdlHbAA","jrhaBzoblHgw@kX","`rhaBppblHjBh@","luhaBzqblHbKtC","tuhaBdqblHiBi@","~umdBvaqkHUsC","hrmdBz~pkHqb@eA","hrmdBz~pkHJlA","hykdBb|pkHX?","r_kdB|zpkHa}GfB{lAgh@om@_t@keBsa@moAqs@yQcAapBrRazBss@}l@cJ","p~s~Azu|kHg@B","h}s~A~u|kHg{D~]upB}kA","h_kdBd}pkHrBE","|bkdBh{pkHiBK","humdBb}pkHKC","trmdBhaqkHx@^","ntmdBhbqkHn@Q","|tmdB~|pkHm@H","rfqaBjgdlHbYsChs@oc@zyEw{B","p|ecBh_lkHwgD~M","pdqaBhfdlHquAxAelAwNa~Aib@","fgqaBffdlHuA@","tli`BvetkHhcAoBzqBbr@|aA`v@hlAbrA|}@~Z","`{ubBnotkH|V|Arf@s\\xw@iqAvgC{dCt[qJnkAyA","fyubBvntkHx@V","l{ubBhntkH{@Y","pyubBnmtkHy]{H_u@lGqu@|n@yaBxl@yc@fEkm@hw@","txkbBxhykHdk@qt@dg@{G`fBan@jt@sn@jp@uEj]vH","twkbBdjykH^k@","dxkbBjhykH_@j@","hqkbBzqykHyc@hj@krBtt@{fA_O_Y|@qWwH{n@_@","nuu`Bv{zkHhSnBjrBlt@","`su`Bp{zkHlAD","xuu`BpzzkHsAK","dsu`BdzzkH_}@sZoiA{nA_jA}{@sqBwp@gq@`FifA}Oo`AhC{dEwzB","r_z`Bpt|kHy@[","x}y`Bts|kHopBus@oUmC","`_z`Bru|kHdzBlPrn@~e@~uFbkB","d}y`Btt|kHz@\\","~h`_Bjj`lHcDM","|ozaBna_lHje@}T","|bkdB~|pkHrT[","xv{aBti~kHsaGzrC}r@bc@_XpC","zqkbBfrykHxDaG","dwkbBviykH{DbG","lq`bBfc|kHoeAlh@sp@~Ha`@dQ","r}~aBhc}kH`v@y_@","xnabB`z{kHk\\dH","tt`bBnb|kHlYoF","pxkdBb|pkHV?","lxkdBf{pkHa@?","bykdBf{pkHU?","bzkdBb|pkH|Rf@","jwkdBf{pkHmS@","`nldBj}pkHP@","rnldBl}pkH`c@zB","vnldBt|pkHSA","bnldBr|pkH_Tk@","|nmcBznikHsrBqTio@dc@{h@`x@i_@dG","`oncBjvikHc_@oF","`afcB|`lkHjb@iIbe@gu@zn@_d@hOs@poBtX","h{mcBlsikHtSrC","xs`cBhnlkHkgAjCoq@bg@","~oncB`xikHhNjB","naocBnzikHmQcC","p`fdBn_qkHv}CiA","lx{aBjj~kHf]oP`k@aGzYoL","nsmdBh}pkHe@p@"],"GO-070":["`lecBfm}lHriCowA","|_cdBtznlHa@kA","jrbdBhbolHb@`A","bhtcBxatlHy@q@","rctcB`_tlHh@nA","rctcB`_tlHgdCtsA","xe|`Bd{{nHosAvj@}XzsA","nssdBzbblHuLbI","j_rdBxiclH??","p`rdB~jclHfXsR","pojdB|{hlHii@jL","bq__BxjxsHuCvA","tnn~A||usHeSo[u_@eFoe@oSwUj@wUv\\yDxg@oIvSinArm@ga@lf@ck@`X_X~[","jxsdBr~alHpEoD","bbpdBn{dlHn_@sW","xqwcBposlHkYnGe\\{E","`yobBpohmHfd@qS~s@mCxr@wc@naByN|dAqX","lvicBbrzlHajCbyA","rmhbB|_lmHckF|pAycA`g@uRdYsBtu@oy@hbB","`{|cB|oplHla@cM~jArUhy@sf@","tvicBvtzlHj|Auz@","rslcB`xxlHe|A`y@","hdocB|bwlHkDvB","xk`aB|eynHp\\i\\vPu}A|Zwi@jA}`B`Kq`@voB}_CtF_T","vm{aBpxvmHwb@vV","bsyaB`{wmHm|AfaAamBxc@g{F`nE_mCbqH","lap_Bbk|sHv@h@","hcp_B|j|sH{@D","~wg_BtbzsHwpFez@cThB","~sjdBd|hlHjDcA","fjzaB|pwmHh]oP`]ec@","pu}`B~a{nHeOvG","b__aBdfznH_[vQ","fmsdBlhblHvEmD","~ssdB~bblHjCkC","|wsdBf~alHmCrC","|wx`Bb|_oHr[cwA`qAsg@","n`}`Bbo{nHuY`K","tc}`B|m{nHd}@_e@","v`}`Bto{nH|Aw@","|sx`Bzd`oHg@`B","jwx`Bx{_oHmB`H","j~faBrcknHzkCkoH~yFimEhoBue@hoA{y@","|}faBveknHLcA","~|faBheknHaGdTioBj_CeKz_@y@~~A_]no@iIjjAwLv[{i@na@","j}faBhcknHK~@","h{rdBdvblHl@]","byrdBlvblHwXjR","b|rdBftblHm@^","v|rdBfublH`IsF","xyrdBjwblHn@e@","bc~`B|xznHqL`H","rb}`B|l{nHcAdA","fzvcBtxslHv@A","r_wcBdxslH|@K","~{vcBrxslHrBM","dbucBdrslH`w@nE","hhx`BrdaoHbJi[","`hkdBvkhlHqg@fQ","rf|`Bj{{nHbYuJ","za_aB|gznH|h@_a@","lsx`Bhh`oH^wA","ltx`Bpe`oHnBmH","xesdB~lblHuHfF","xfsdBrmblHlEeD","t}sdBhyalHwD|C","fetcBratlHzAD","tugdB|zjlHgSxYwr@|f@","dhhdBvgjlHON","dkgdBfmklHn[wb@","tghdBnijlHHI","|dtcBpatlHj@i@","|dtcBpatlHH@","hftcBf`tlHw@u@","pkkdBdkhlHoBP","tzrdBfublHq@d@","nxldBfkglHr@g@","~ghdBdijlH~a@ib@`o@qKzn@ac@","rbqdBzbdlHz@i@","tnqdB|xclHzNuJ","l_pdBr}dlHtAcA","v|ndBtwelHta@aY","zzndBbyelHz@m@","xjndB`eflH`O}J","bjndBpeflHTO","fhmdBl_glHz`@{X","nfmdBv`glHv@i@","t|ldB`hglHhAu@","|xldBhhglHk@`@","|{ldB~eglH_BhA","dgmdBl}flHcBjA","j|mdBdmflHeTfO","fjndBrbflHk@`@","nyndBfwelHgNjJ","r{ndBpuelHcAt@","r~odBv{dlH_b@xX","h`pdBnzdlHu@f@","h}qdBxkclH_|@tm@","tfocBnawlHkAl@","fko~AhywsHq[k{@","lgs~AfwxsHcAO","lap_Bbk|sH_Q{I","z_gdBtyklHhJmK","lwddBvomlHlgAau@","zpddBvtmlHpE_D","nsbdBjdolHj|@sn@","xcbdBxpolHtNmK","fr|cBduplHxGgD","bpycBxlrlHbaBsv@","j}xcBrwrlHvQyI","pawcBxwslHxz@e_@","~uscB~itlHdk@yV","nlocB`awlHnhCavA","j~ocBvsvlHuVvL","fzucBdqslHiWF","|aucBlqslHi]rL","rlycBlmrlHyy@ba@","xq|cBdtplHedBfx@","jn}cB~cplHq[dO","jrbdBhbolHsr@`i@wThHqUq@aj@mQ_XhA","tmedBt}llHizArcA","tghdBfhjlH_QtQ","feidBhiilHa\\l]","pwldBjiglH_gApq@","p}ldBxdglHs@d@","`dmdBx_glHoE~C","zhndBtcflHoKnH","ndqdBpadlHdIsG","~~ldBjfglHnFsD","bzldB~iglHpA}@","|jldBfuglHpL_I","zvbcBdb`mHbVuj@`}@gh@","jkecBfl}lHgw@dc@sSpY","`tlcB`yxlHlwA_w@","|~ncBtfwlHijAjp@","|tbcBja`mHqStc@kn@`T","n~bcB~j_mHqHjU","|bzbBlaemHhk@eOzt@oh@lsCsz@zPiOlJsX","rf|aBf{umH~_AepBlBsu@nOoUhfAqh@p`IkpBrsCmqA","zfyaBjcxmHn`@mP","|gzaBnqwmHySpH","zj|aBbnumHeExJ","v}hbBhzkmHcOrD","dtubBrhfmHiq@nHmr@zc@_y@nE}mDbaBwfAtY","hkwbB|~emHcv@tH","fy|bB`ncmHoj@ba@e`@nK","hes~AvvxsHayBm\\","ll__BpmxsHa`Bdo@ubCwb@kjAvP{sAoS","poybBlhemHjR_F","plzbBt|dmHkM`D","d~ybBvaemH{qAd\\","vp_cBhibmHovAvc@","~p`cBb{amHg_@dM","je}`Bvj{nHwAdA","tu_aBzvynHqUhN","loo_Bf`|sHyuFm|@","rxg_BxbzsHSC","td|aB|yumH}Ur]"],"GO-326":["fkbdB~mxnHmf@|R_fCxhC","~zvaBnm`vHNY","v}vaBli`vHg@v@","f|vaBth`vHm@U","nquaBp~~uH~En@","|evaB`bevHCl@","lroaBxyyvHwAzA","nxuaB``_vHfUfC","ppzaB|xbrHf@zN","di|aBx``rHk@`@","xqzaBxhcrH??","~rzaBphcrHS_O","jh|aBvb`rHh@_@","hv}aBd|~qHdEgF","vozaBhwbrH??","bs}aBl|~qH}h@jc@","xg|aBza`rHeg@t\\mN|u@","xqzaBbvbrHjKqr@di@y^","dszaBzidrH{Bbv@","jt}aB~z~qH??","ti|aBva`rH`i@yb@","turaBfsprHw[b\\PfLjLnPdc@tHzgBpfBbGnu@jOfQ","z{xaBna~rH}`BdgBa`B|TgyAuI{}Ati@_p@p\\}xAdqAmn@dKof@h]yo@tE}r@nT{Wfj@qR~dAgjApcA{Vn}@sf@bd@?tS","`uqbBxf_qHef@~gCaz@ryCo`C~nEwt@bm@_y@ddBst@jbCqj@jw@guAzuAwg@fVso@bj@","|bxcBznboH_Wz^uh@htAsBrd@nZ|`A}e@vtD{Zjb@aj@bYsfCp}BuS~u@bKz`A","jljaBtlduH?tu@zPhx@dm@np@bq@rpCfp@jtA","|kpaBvfruHzQz\\zWjIbBx\\~RbXqDltAsUtRek@nrA","n|}aB|t~qHcG`E","|szaBfadrH_@wU","fkbdB~mxnH|BB","jnbdBtjxnH`A`B","vmbdBtkxnHoAhA","fuy`B~qptHyJvIub@vIyb@^owApbAqmAh_Fp@rZ","~o{`BjkotHkl@n[","db{`BrymtHWjThNd[","l{ncBhrzoHNgF","z{ncB|syoH@hA","v{ncBt}xoHBfU","xzncBn{xoH\\dA","l|ncBbyxoHk@yA","`{ncBhvxoHOzA","h{ncBxxxoH??","v{ncBt}xoHTiA","lldcBtpjpHiPpNgTph@mZnVqo@nN{j@nu@iw@te@a~@pTgvBtdAknBrn@qnAdfA{HhO","l{ncBhrzoHiE`P","zyraBfoprHeC~B","hczaB|sfrHwuBv{AoF`O~@xa@uGxm@}y@xe@gPzz@iWdY","|kpaBvfruHc[qp@","|{ncB`kzoHTkA","x|ncBdfzoH]gB","z{ncB|bzoHo@bC","nzncB~gzoHl@`B","z{ncB|bzoH@uK","h}ncBhgzoH??","~uncBfd{oHlD}P","`zs`BfsbuH]`B","b{s`BdvbuH_AB","vkjaBvkduHR\\","jljaBtlduHJ[","lkjaBxjduHH\\","tpvaBvp_vHbIfV","vnvaBhd_vH|@lK","vp{`BdkotHvDnH","hfaaBrjowHaBlC","jz{`BrgbxH{GtM}a@dE{GlHo[|wCgXv~@`DxyA{}AxzAqp@lwB","xi{`BtnktH\\vA","vj{`BlqktHbEvZuMlk@","lpbdBvmxnHaAaB","xzvaB~g`vHRr@","dx|cBpp}nHupC~xC","jy|cBno}nHe@`@","l{|cBjm}nHaAbA","x||cBvk}nHk@r@","nfxcBpjboH{@nA","rdxcB`mboHu@x@","vnwaB~jxrHvSdRrm@hcAcBnbAaPhX","llwaBbixrHhAz@","n|vaBdk`vHf@w@","zvy`BxpptHs@d@","rbz`BzgptHwJ|G","pp{`BxjotHQP","~o{`BjkotHVE","zjmcBfr_pHpGz`@oWl_AGtW","bdhcBzpjpHwAQ","d{lcBnpcpHpDx_AcwAhwC}TdMqm@}E","tzlcBfmcpHNfB","vt|`Bjk{wHGpA","fcaaB`oowHszArhC{W~lC_YtcB","ns|`Bjw{wHI~A","nt|`B|m{wH_@lH","zn~aBld~qHkQnO","vp~aBvb~qH{@t@","|}xaBh_~rHaAdA","`sdcBxkjpHsEzC","jahcBhpjpHwTqEo]kTiSAkQrH","bdecBt_jpHaPbK","lfecB|}ipHiAv@","|a}`BddrsHD~@","pr~`Bbo{sHk]xXui@lVyz@rnAmd@~hB_Afv@cV|r@`CfVrz@lbA~YxmA","vuqbBjd_qHUlA","pvqbBjpwpHIxX|\\biBm]`oB","h{s`BvxbuHNc@","txs`BtwbuHPd@","b{s`BdvbuHa@}A","bys`BhvbuHMj@","x{s`BrwbuHUm@","fys`BzxbuH`AC","b}q`B~i{tHhaAf{DkD~k@","l|q`B~g{tHT~@","zz{`BhebxHOhA","ne|`Bdb`xHsIbbA","lt~`Bnm{sH{@r@","bb}`BdfrsHw@ju@zPvd@loAngAbJrRkEht@_r@vx@","fmjaB|jduHIU","n{vaBtl`vHv@u@","x}vaBvi`vHd@{@","lfpaBpb{uH|c@fRnc@b]~g@tz@rw@|M","tooaBt|yvHw]lc@sRfoB_t@`bByxAjw@oaBn}Bcv@nfCqmBxvB","xevaBncevHsTbhEgn@|sCzW~pAi@`Sax@d|A_lB~sB","~zvaBnm`vHaTpsC","`ft`B~nsxHo@i@","pdt`BtmsxHH|@","re|`B`a`xHCb@","ds|`Bjz{wHqLteC","zkjaBdjduHMR","|ljaBfjduHa@A","|ljaBtkduHHW","vljaBxkduHDC","vkjaBvkduH^@","~szaB|hdrH_@?","~rzaB|hdrH^?","~szaB|hdrHAuF","|pzaBzafrH~Acw@","drzaBnjcrH\\f]"],"GO-512":["fcxcB|fboHwOynAkiCefD_q@wnA","fcxcB|fboHj@bE","bexcB~lboH{@aE","rdxcB`mboHDJ"],"GO-222":["rjfcBfhjmH_DcxCww@a}@sf@y@}_@mXev@yQ","t|ccBzujqHhUvw@rP~R","`xdcB`cfqHaMxn@c]tz@xOhf@","x`hcBztjpH_y@`rBhV`nCm]~p@w@|}@sa@xrBqj@lbAIjd@jp@lpCiDd{@","tvecBzxkkHbEzD","l~ecBr}kkHwFwC","viccBl`nkHcDrmBoLlj@gN~K","`mccBffomH{QzkAb[~{@o\\jbBbj@|~Aq`A|sA","jebcBtl{oH_ZsY{t@anAwY}aAaQcM}j@ux@cm@ec@oIc^dRwe@qFwl@bBue@~Ryn@wHab@","l`xbBfvrlHId@","b`xbBlwrlHa^zrAcMnrA","vkxbBpfaoHsM|Awi@{Gk]et@dj@et@iVuh@hKqo@jQmb@p_@}]rAg[uOqtAmM}a@jEua@","|twbBl{doHvMtXlOtH","b`wbBvq}iHviHbqQ~Al[kTj`BuL|[","bgwbBrr{iHcPuK","t_vbBxcfmHQv@","~fybBbwgnHs_@rg@","zgybBxugnH[h@","fxzbBh`enHuFzW}d@tw@","rjybBzqgnHfe@mw@~FcY","rjybBzqgnHwA|B","|v{bBr{cnHu]tc@","d{{bBrdkoHiC_Wuh@uq@_h@kjAaOwN","b|{bBzfkoH]gA","x`hcBztjpHfAaA","jahcBhpjpHvAP","fahcB|qjpHM|A","`{dcBjvcqHhLfs@","jszbB`calH{m@|yA|EztEog@x~D","~t|bBbg~kHBxT_K~Bkd@~l@","vc{bB|n`lHaApA","rhxbBlmonHjHqu@vw@eeAa@g\\","npwbBtasnH{Hka@x@i\\~SkVrIsZ","`hxbB~nonHPq@","ngwbBbt{iH@`B","zgwbBns{iH??","xfubBfuyiHmIgO","j}ccBxpjkHl@N","x~ccBhqjkHTH","rbdcB`sjkHx]vQ","n_dcBrqjkHfAb@","vadcBvrjkHZH","pgwbBdw{iH^sA","rihcBfkjrHN`@","bjhcBhljrHbCnNyM|g@vf@~aAaOl]jFxC","h_gcBviirH|@F","fagcB~iirHt\\rItIrU","le`cBf~_rHjDrSb{A~uBvh@ldAtt@xb@|Wru@","~c`cB|}_rHl@H","`gecBremqHvMjQ","rdecBrbmqHlA~A","jq}bBdu}qH}A`D","ln}bBfz}qH~XxO","ht}bBfp}qH}A|C","dq~bB~k~qHdZla@rVnN","lh~bB`k~qHfBs@","tk~bBli~qHnDpA","vkxbBpfaoHTxNcSnx@yBbi@","|tzbBdaalHq@z@","ta{bBnq`lHwKtN","xj_cBr~tjHc@~@","ti_cBr`ujHqj@jqAeUxgCvT|cAjMbrApn@v_BfUb_A|`AvbCph@hW","~uvbB|e{iHgf@kc@","b_vbBpefmHu@x@","j`}bBbh{kHs@~B","ja}bBre{kH_@nA","vb}bB|a{kHk@tB","zgbcBngskHs^d\\sGxk@em@bj@ut@xeA_Xn}@","ntwbB~ydoHLl@","nexbBhainHo@rA","jfxbBv_inH[p@","bjfcBfjjmHN_A","`ifcBbmjmH`@{A","vgfcB~ojmHh@{A","`mccBffomHhNmt@dQkTvb@oPlT}x@","ljwbBzt`mHnGhh@","liwbBnq`mH^jB","biwbBxn`mHHtA","xsvbBpkxlH~O`|E","hsvbB~dxlHNpE","`svbBpaxlHFlB","|rvbBx~wlHBvA","bgwbBrr{iHP`@","`hwbBls{iH]Y","bdecBfhkkHpQrO","laecBxekkHtAlA","bdhcBzpjpHwAQ","jv~bB||anHc`@`y@wRzEc\\oFmLfD","lw~bBzzanHa@`A","~dwbBxk_mHbC~a@","xdwbBrh_mHDdB","`abcB|i|mH{l@tx@wz@fvB","jbbcBjh|mHi@p@","jhecBrjeqHhGj\\","vnubBpaziH}FiK","j|tbB~dyiHa@u@","pgwbBdw{iHcMbe@tElS","njccBvelkHWty@","v~|bBbl{kHyOxy@`Fd_@","|bxbBtsplHWr[","dbxbBhpqlHw@|d@","xuecB~wmqHc_@bj@G|h@_IpBmHhTsPpLih@zLyIza@uBr~@c_@zyAtJfhAiYla@e]jVma@g@{Stn@"],"GO-217":["nanhB|golHwdAtoDyAxUpeDj`HrI~pA","hqnhBn_nlHzDoM","t`biBtk{hHcmDhyBoUza@{m@jrBt@pk@","znzhBxheiHx`@rmDiAtp@kc@nxA","vsihBjpljHajGt`ForAx|AuIp|@","p}rhB|{djH_@~L","p|rhB|iejHqdAaBkKtF","jvygB`ojkHh@cF","twygB|gjkH[qA","ronhB~hnlHt@oH","~_vgBpamnHik@hP_vAlqAupBjbAmfApGmx@`_@knGfjAcPxOsj@lqAwPvM","|tmhBxb{mHyB`C","dpqhBhqcmHNtJ","ji~gBntxjHan@lpJyH~PizAtsAr@vwA","nj~gBlmxjHc@`F","~izhBrboiHu@bC","hhzhBvfoiHcjAjiBigAnkCwEpXpDne@","jchhBdrpkHs@E","bbhhBdupkHKpB","zahhBzppkHOdC","|pihBzfwkHyJ}RjDwfBkU}x@","dsihBriwkHgAwA","dwnhB~pmlHjh@mlB","tamhB|iglHc}@ifA{Js|BhHmdA{Bgf@ea@}rAUwiBaF_O","bthhBfqqkHiIyO","tbhhBvxpkHZuF","hqnhBn_nlHgBjG","nmnhBnnnlHb@{A","~fnhBfynlH]jA","nanhB|golH`CuD","vcnhBlaolHgAnE","jahhB`upkHt@H","vjohBbnrmHyKtj@vDn`Awm@nfD","ziqhB~camHhEhlA","dpqhBhqcmHuDklA","hbhhBpxpkH??","fihhB~_qkHmEiE","xihhB~_qkH??","p{biBnd{hHu@B","zybiBrd{hHeX`F","`}biBhd{hHo@D","laciBxc{hHkCN","`dciBjc{hHsAL","d~rhBppdjHnGqk@","d~rhBppdjHSjJ","tfshB~ccjHoGpk@","xvygBjejkHMnA","liphBzoejHiA|A","rjphBpnejHe@h@","bgphBxrejHo@v@","f|ohBz_fjHm@z@","r}ohBb~ejHk@v@","h_phBb|ejHu@~@","rephBptejHiEpF","twygB|gjkHi@bF","bjqhBxbamHGd@","njqhB|camHKc@","hkohBnlrmHQr@","tpqhB~|cmHr@paEk[tlCsi@f~B","ncmhB|kglHy@_A","x{nhBhfilHiw@ky@","|avgBx`mnH}@V","ffvgBf_mnH}@T","hdvgB|_mnHkAZ","xu_hBhzenH_cAvjA","hvihBfnljHqAbA","xzohBvafjHkpBveC","nl}gB~khnHw\\n\\ogEvtB","vm}gBpjhnHg@l@","jp}gBtghnHsAzA","xq}gB`fhnHm@r@","xhlhB`ijjHoqAddA","lilhBnhjjHSP","p`phBpcjlHwc@g\\","bqmhBzf{mHk_@|c@_Jlo@sp@rOa~Ap~BgkFl_B_RlL","ftuhBx`yiHbNrlBu{AptE","tsuhBt}xiHPbB"],"GO-154":["pozbBn{enH{QoL","bvqcBd`xnHrM_Eh@cK~L}C`qCurDbJud@z_@ir@rxAqu@pT@fh@qi@","|s~`BtzxmHjpBno@xwArSf{@b}Ad{DliA","|cd_Bnq}mHxDeC","vlb_B|t_nHhOsb@ze@y^","dab_Bb``nHlBj@","|hb_Bd}_nHqBtA","ngb_B~``nHl@yB","rdb_Bna`nH??","~db_Bd``nHyBA","bpw_BpoymHn@E","rne`BhrwmHllI}l@","bac`Bb}wmHd^aC","lge`BbswmHsM~@","pvlaBjh`nHb@rB","h{laBdi`nHwCY","rb~aBv_ymHaJwBkLqPmZ`A","nexbBhainHo@rA","rexbBxcinHfAR","dumcBp~qnHn\\vw@","bbfcBbzmnHyr@s^oe@pAc~@m\\ys@Tyj@iMk`@xKoa@n@gb@kMyZcb@g|@ki@","fv`_Bvg`nH|i@sF","pmncB`ptnHn^pOpTpX","tsncBj_tnHcF`L","ddpcB|}unHnO~Kl`@ft@","rvncBd{snH??","hlncBpntnH??","`cpcB|{unH??","plncBlltnHk@f@","btncB||snHMlA","rbpcBdzunHCp@","tsncB`ysnHLjA","xkncBzotnHv@D","tsncBj_tnHr@s@","juncBrzsnHu@q@","dlncBfntnHJy@","`cpcB|{unHMw@","xbpcB`}unHj@Z","pmncB`ptnHg@e@","ddpcB|}unH]i@","bmbbBtjinHo|@bgDmMlGcy@sAe_@d~@","bjubBx}inHhpAeLjF{I","`ks~AtzfnH~pCsu@`p@a`@nb@qp@lq@eC~s@ad@rNy_@plAJ","hei~Aj{fnHl@n@","taldBnqqnHfgBiH|f@o`@jxBps@xeAbA","vn|aBnlxmHwKs@iEcV","jv{aBj_wmH}CfF","xr{aBtgwmH|B_G","xe|aB|kvmHcAsL","je|aBxmvmH??","dw{aBp~vmH~L}O","xe~dBlgsnH``@uLxTcRfYGh[ch@vWmOjFwLxRe@h|@iVni@ka@~C_OlOaF","nl}cB`zknH`OoKdFwd@rq@etA","xrvdBh}qnHtWaBzc@rp@z[`FrE|Nhw@sDvXlQ","rf|dB|otnHt]kBfFcR","fegeBzlmnHji@qJ","fefcBf{mnHx_Dzu@l{@bn@","bbfcBbzmnHbBb@","nhg_Bvf}mHpUnHx\\h@","t{{aBvswmHgIcL","|kd`BnwwmHhYuB","dfd`BjxwmHvD[","h`d`B`ywmHzDU","~hs~Af{fnH`AQ","xxd`BbuwmHoWdB","h`d`BhxwmHe^xC","fd}aBt|pnHrA{C","fd}aBt|pnHgDpF","zf}aBxwpnHsAzC","~~|aBfdqnHvEpD","xbhbBn`onHnHtc@}DrHup@lXsg@f`@y{A`i@_{@uBym@{[oPQq^mZ","bmbbBtjinH|f@g|@kWgx@wDom@pE}g@gMw\\kC_w@","tc|aBh~umHAQ","bjubBx}inHejA~Aqu@tUi}@sg@s^f{@oTjNmTp\\","hoa`B|cxmHxp@yE","zma`BbdxmHl@E","zjbbB~f`nHwB{r@aG{G","`o~`BfyxmHtAV","|_v`Br}vmHvoAjApzDjw@","~cxbB|cinHn@sA","xbxbBveinHd@y@","zgxbBldinHu@s@","t}u`Bp}vmHfA@","`{u`Bn}vmHrA@","zxu`Bn}vmHdA?","`|o`BjdvmHx{DbX","vq~`B~yxmHdAT","fl~`BjxxmHxAZ","llb_Bpu_nHHS","|hb_Bd}_nHnBsF","vv{aBt_wmHLc@","dw{aBp~vmHYX","nge`BrswmHzAK","hje`BvrwmH{AJ","jje`BfswmHfC]","rne`BhrwmHyAH","xke`BrrwmHo@B","ffe`BxswmHf@E","ve}aBxiqnHpMdK","trncBhwsnH^v@","nbmcBfaqnHtQh\\","|l}dBjxsnHzBoH|QsD","pl}dBlysnHJa@","jv_dBrrgnHhUiJ`W|Bn_Az^","js}aB~vqnH\\_@","n_mbB`xlnHyk@~f@iYrHmd@yBco@rY","`_bbBfj~mHed@mWiGwSaReRsQqaAb@e`@ki@kE","vfi~Az|fnHjkBfs@nrBbJfUeFbkAyx@","`va~ArhdnHhaA|\\rwA`I|r@e@j_@|j@","rqw_BjoymHf{Hgj@","z|h_Bpq}mHhfByUbgCeiAxbF_`@"],"GO-050":["`irdBdqamHlFbC","pesdBhfbmHl`@`T","ncygBz`juHcl@u|A","~ilfBt``sHsCjF","xqseBzcsrH??","vrseBvasrHi@~@","hrseBldsrHLuA","jelfB`h`sHtDkE","jelfB`h`sH_DvXp]p`@","jyweBp`irHFx@","`qneBzfyoHpAeA","hqneBtbyoHdBY","zqneBhdyoHYpA","t}ieB~tlpHj@`zAbg@p_@rRlg@th@~h@z`@pvBzSpb@jVjmA`GziBy]z{@zThsA","dyveBramoHsAP","pvveBdbmoH`An@","foufBt}isHzvB}XdoAo@bkBys@hxCoXpXbDvsC`aA","nsoeBzccqHpHnh@","pwoeB``cqHyDmV","nsoeBzccqH`CyB","|oheBt`hnH~@lb@","|qheBbdinHfCC","dvheB~cinHNdE","dvheB~cinH|GK","tvheBdjinHjBni@{Hx^Qxk@|i@ng@v~@z~AfIx_@r@`cA|k@dyAz]fW~OvW","daueBvxloH|AJ","bjheBvignHi`@goAlFkT`_@ig@lEyk@gx@siBajA}mDaKcM","p}jiBrykwHgUuFuaAmBwmAfMyx@gQipA{FygBn@kQdF","dbkiBvykwHYvA","~boeBvyxnHvAhC","dzueBz}doHrDbo@mf@lhB","thvdBxccmHy@L","~ftdBj{bmHvLvH","bztdB|ucmHll@_O","jhvdB|ecmH~A`@","lordBfzamH`@}C","hxrdBv~amH{GoC","nprdBhuamHjGdE","`|lgBrjlsHl@xB","neygBzcjuH_A_B","p|khBnlhwH_\\_wBkmAysCs]yaBpDcqBsb@ydHnV{jKc`EutEkrAugGaR_|EogAmbAk_AcUaUg_@","zfvdBfdcmH_l@`P","rivdBrdcmH]Y","jkvdB~fcmHw@kA","pgvdB|ecmHX?","po}hBhkkwHeCbA","p|khBnlhwHFrA","h~khBvnhwHw@gA","j_lhBlphwHaBE","p}jiBrykwHhBdA","`qneBzfyoHyNpM","fooeBz|dqHTrL","p`neBfyyoH_BL","vttdBbecmHf@zB","xb}iBds~xHsJ{[wVfKaPFa~@}\\qWgTs{Aea@dNat@wZoOegDwr@eiAk|E|GsXkD{dAehAouBczCk_Ayb@bFcVsE","tdpgBrfatHudCksMv^__E","xepgBjjatHc@wB","vvvdBttcmHkJuL","`vwgBpbguHwdCkwIlNowDs@eeBgJuX_`Aqq@}LeVqGq|E|H}eAo^exD","jvwgBdcguHIS","jk}hBlmkwHeW`HsUO}iIaxAmoDmK","bdueBbyloHlq@`H","ryueBj{doHPnA","zxueBzwdoHVnB","hxueBjudoHPnA","veoeB`~xnHj{DfvGdU`_B","tcbeB`aumH__AomBmwA}oAaRwm@pI_p@yGe`@mcD_fE","xbdeBzcxmHsAgA","~ddeB|exmHeAaA","jfdeBhgxmHk@k@","|~lfBjcbsHj@l@","`cmfBngbsH^b@","h`mfBxdbsHvAtA","dkufBr~isH`C]","`dmfBrhbsHxyBd`BriBpiCt`@fI","brigBf`isHjgBdfB","jpigB|~hsHv@h@","fmigBr|hsHbBhA","`kigBb{hsHdAn@","n}lgBlnlsHm@yB","v~lgBfrlsHg@yB","`|lgBrjlsHl@xB","nzlgBlglsHp@dB","h|khBfphwH`BD","dalhBnphwHy@A","ntneBzayoHeBX","~bkiB~ykwHYG","lckiBlzkwHMM","|bkiBp|kwHNcA","bbkiBv|kwHXE","jakiBn|kwHVF","jakiB~ykwHyBK","|jheBhkgnHYq@","|oheBt`hnH_DkT","p}meBtyyoHBdB","t}meBz|yoHj@iA","faneBluyoHmAt@","d`neBtwyoH`@gA","p}meBtyyoH~AM","fvqeBxw{qHo@hB","|ooeBnjeqHr\\|iCeEfa@xPnhAaDf[td@h~@tjAvbEdF~eAsi@fb@yj@`lA","vdbeBxbumHa@w@","d`deBraxmHmz@y}A","nuwdBtydmHc@i@","jtwdBjxdmHs\\ub@","~utdB~hcmHZzA","zvtdBzkcmH\\|A","xwtdBxncmHhAbF","fbsdBndbmHv@\\","~csdBlebmHp@Z","~xrdBb_bmHfHjD","hxrdBv~amHTJ","zxrdBn{amHQfB","t}meBz|yoHao@vwCiu@b|@uPjo@Xrj@rO`KuApQea@raA}@~d@bZzoCeKrL","d_jeBntlpHo@N","hxteBzwioH}LzkArFbMdNzD","jxteBlwioHAL","ryweBjbirHk_@`lCkUbj@wJ`k@}g@je@mZvs@","vtqeBb{{qHkq@l{AmJd_AxBp{@fI|GzxA~Svr@u@~u@xe@ps@lp@`Bp]{Fdx@"],"GO-162":["|aldBfc_qHpQ_Q","xf`gB|x_qHnMn`@","xwjdB|z~pHrUkJ","|aldBfc_qHwPgN","fiafBpycqH~}BkW`tAdq@`UdChi@aPtaAeEtiLupBr_AmJ~nBV","vn_gBdu_qHpIbK","t{~fB|c`qH|BpA","vapeB`tdqHxCU","pfpeBjsdqH}Bi@","v`_gB`d`qHaDC","hlagBdyaqHb`@xFzl@}JrKxBjb@nm@dr@nY~r@|AfGwFzBcl@lJoOf~@qS|[v_@vVnDrN|L|yAlOna@fNlk@jd@n[_NrUbD~yAj{@zGbT|RfQjfBib@naAhAz_A{Jre@wZlVM","n~oeBftdqHdAE","pfpeBjsdqHl`B{J~jDdZziAaq@xj@b@`bAdO","r__gBnf`qH|AJ","|gmdB`~}pHnTmGxmK``AfkJx_@hmEzfB","hujdBx}~pHnA{A","hqkdBrs~pHaAmC","lnkdBpo~pHXK","lnkdBpo~pHv@lC","j{ldBhj~pHyXpW","j{ldBhj~pHvIqI","bfmdBv_~pHx@u@","ntldBfq~pHzE}E","hy_gBha`qHbStf@","xwjdB|z~pHyAL","dh_gBdd`qHmFC","pb_gBzf`qHy@yA","nileBx`dqHxp@~X","xfleBj_dqHtAl@","ffafBdzcqH~AS","|n~eBhbdqHnVjCx~@oK","vm~eB|adqHd@J"],"GO-469":["xxvdB|j~lH??","t_rdBlc_mH]I","b~qdBbc_mHEA","`fieBxivlH??","dljeBldvlH{d@pC","jfieBlivlH~d@{B","zwkeBjqvlHfl@vLpz@nk@pn@kIppAhh@lyAkRrPyLl]mq@h_AaLr`ArX","~`ndB~d{lHaUkZwjAgh@mt@cg@amAaUcTiPiKij@sPuS_Hk~@y}@{b@qReaA","fdwdB~d~lHfx@o[","`{feBxmwlHokAfl@o`@wJ_^jL{eAqV","rnydBr~|lHqAnC","ld`eBhexlHZbA","|jydB|c}lHqDfA","ve`eBlexlHl@I","he`eBlgxlH`Bh_@qDhW{]|p@_N`Cyg@gMgx@zBgc@sG__@pz@","jkydBjc}lH??","nzvdBfk~lH~@g@","jd`eBbexlH??","ltodBna}lHIQ","btodB|`}lH}FuJ","dlodBfu|lHkEsG","xeodBrl|lHo@cA","dhqdBxv~lHyK{H","papdBtw}lHxXfT","n|vdB~i~lH_A@","fmbdBlkolHVqA","vkbdBpjolHn@Z","fdwdB~d~lHwF~C","papdBtw}lHcLeU","vjkeBzlvlHc[iG","nnjeBnevlH`[`G","dljeBldvlH??","xvkeBrpvlHqGuA","`nkeBrnvlHpGrA","fnkeB|mvlHuBK","b~qdBbc_mHp@j@","dg`eBbexlHm@a@","he`eBlgxlHH{@","jeydBdf}lHfEI","lmydB~c}lHd@kD","bcndB`g{lHcAaA","f|ndBl`|lHcXkX","pjkeBpmvlHtBJ","zwkeBjqvlHa@W","rvkeBfqvlHf@B","|~ndBpc|lH{@gA","`}ndBha|lHY[","t_odBld|lHW[","hdodBnj|lHsCaE","n}xdBnh}lHl@M","|~xdB`h}lHlE{@","x`rdBp__mHc@zB","p}feBblwlHoAt@","fsgeB|dwlHuTdF","t_rdBnd_mHNX","|}qdB`c_mHME","n}qdBzb_mHiTaK","v~qdBbc_mHS?"],"GO-060":["nwsdBt{mlHc\\~oC","nbrdBtjemHnIyn@","bytdB|cglHhAewA","jmrdBjlbmH|@vO","`mrdBblbmH??","zdrdBzw`mHk@wT","tcrdB`z`mHjHbo@","jcrdBvy`mH??","nqrdBj~bmHOi@","bkrdB~ycmH??","jkrdBlzcmHaNzz@","lmrdBpxcmHlB}W","x`rdBhf_mHXxD","xvcdBrpnnHPf]","xvcdBrpnnHjk@urA","rvtdBl|hlH}LfhA","zeicBb|}vHg]`]","bd{cBjpmrHdHf~A","jqpbBtdtuHbPbL","brdcBvcwwHPbz@cSj^_SrGedA_Di^hVkG~Th@~q@mJbd@gyAxsB","t{edBhsjnHtX{j@`Mym@","zqbdB|oxnHhuBjyDhEhkA}I`eB","lwcdBpponH@vdAi[hlAgRf[}JtbA","fggdBziooH|Ikr@","xmecBjhntHkCvoBqNb~AhKncAwCbQkX`XucDnpA{~FthG","nhycBbh_tHip@ncBykA~fAsz@`h@mn@|SohA|u@","hgpbB|ssuH|@|B","fipbBzwsuHbGxK","`~|cBj|qsHBhA","`l~cBlxdsHkm@f~AqCfV{Hn|AxM|nE","n~vbBjhcuHcwCv`DdIfkAd\\|b@t@|Rat@l~Byt@~gAvAf\\","psocBdkhtHaYjR","xuocBpihtHgAr@","x{qdB~xemHuItY","f~qdB|vemH??","|epdBh`jmHez@drCaw@fpAwAdb@","loqdBlyfmHnAqD","f~qdB|vemHfCgK","jordBl_cmHqBzW","xprdB||bmHq@aP","xnrdB|ibmHuH_o@","xyfdBtcqoHmz@ljFo`@`p@_j@hzGnk@bsAzeBziLiAh{@nlB`tFhBdlA","`~ldB|vvmHLhA","n~ldBfyvmHbA~[cJj]sq@`t@}d@hhAcBfQ","`rgcBtq_wH|Zfb@","rghcBdz~vHqTnV","~khcBxrawHqM`i@eh@ru@","forbBx|uuHoQmV","ltqbBv_uuHbBhA","forbBx|uuHbK`U","d_udBfsalHQS","~ztdBfualH@R","j~tdBnralHeBfA","po|bBpenvHb@Z","tp|bBlfnvHtcA`x@ro@joB`fAhkAbi@|_Bbr@|g@","xtqbBj_uuHiQqL","pwqbB`buuHvUlX","hincBxjitH_An@","~vncBn`itHcAr@","rn{cBfnprHaIm{A","tc}cB|xjrHuf@b]","jm{cBpqprHbAy@","no{cBvoprHcAx@","|n{cBpvprHpFlj@","dw{cB|crrHzAzF","nv{cB~arrHT|@","bbwbBndcuHaAbA","fgcdBzz`rHbh@uaA","tubdB|tarH{u@dqAmLbi@{S|WqTti@ul@jd@oOpp@","jpddBdx~qHch@taA","vsjdBba_qHAJ","tsjdBna_qHArzAeaAlyDvHzq@","vsjdBr~~pH?nA","xsjdB`{~pHApB","vsjdB`y~pH@~@","rpvbBbk_vH`I|tAgGtpDrvBthDndAbh@","vh}cBxkjrHa@nB","tg}cBhojrH_CrH","~mhdB~jsqHRp@","rnhdBplsqHzA|_@{nBh~G","v{hdBlliqHsRfbHzDhZ","d{hdBljiqHP~@","`trdBrkslHoOniB","tvqdBpqylHDnD","~ardBfp_mHT`P","fzrdBfvrlHfb@qoD","jqecBrkzvHtX~R","hmecBjjzvHl@qA","|fpdB|}imH_@jA","xgpdBz{imH[`A","lhpdBdzimHSt@","fbqdB|ygmHyXf_A","ppldBdormHnLvfC","jpldB`mrmHDbA","`pldB~irmHH`B","|oldB|grmHB`A","jngdBhqfnHaHr_@","bogdBrnfnHWtA","xogdBvkfnHUzA","rpgdBfifnHYnA","vdgdBlsgnHPo@","zcgdBnvgnHZaB","lcgdBrxgnHLcA","lpbdBvmxnHl@dA","jnbdBtjxnH`A`B","|lbdBhhxnHl@jA","drgdBnvmoHLkC","zmgdBz`loHf@~E","figdBzfkoHrC~X","zsgdBj{moH_Jtj@","xtgdBzumoHMhB","dhgdBviooHYnB","bogdBzgloHzD~j@","pg|cBrqsrHZnA","n}{cBlurrHpHlY","h|{cB`rrrHd@jB","j{{cBlorrH\\rA","jqecBrkzvHy@}@","~necBljzvHjAd@","hjecB`fzvHnA|A","nmecBzgzvHeBy@","nyncBp~htHoA|@","zrncBlcitHqHjF","ztncBbbitH_Ah@","jl_dBhq`sH@~A","hl_dBhn`sH@~A","fl_dBpj`sH@vB","r}}cB|iwrHjUjq@xTfxBlA~sB","v|}cB`hwrHZz@","|u|cBhvtrHxe@vpA","`z{cBxkrrHh@rB","|n{cBpvprHPeD","jm{cBpqprHp@~C","zhgdB`gooHUtA","jggdBfmooHQdA","~tgdBzsmoHE~@","jtgdBdymoHOdA","fzfdBdthoHrMpoA","zyfdB|qhoHJfA","hyfdB`ohoHPzA","zxfdB~lhoHL`A","|iycBve_tHm@jA","d~|cBt~qsHzDjqBmm@jrDujAh`C","vnecBxgzvHm@pA","xwqbBrauuH_BgA","hnrbBn{uuH\\h@","ltqbBv_uuHbBhA","v|qbBjeuuH}F_E","nbqbBxqtuH|P|L","xtqbBj_uuHKJ","pwqbB`buuHFM","zmecBvfntHAr@","hgncBhlitHu`@jUuhFty@qJ~OoAjw@","husbBxhnxH]dA","jtsbB~jnxH{Yf~But@bgA","hpvbBnh_vHHrA","j{rbBzrvuHrfAz~Bng@jqBxCjb@","`cqbBfttxHmr@r~B","xcqbBjrtxHWz@","hy|bBb|axHs@bA","~i{bBhwcxHy^vk@iMbiA_a@hfAuj@nl@{hBthA_Nb[","lk{bBlucxHm@z@","tw|bBf~axHgk@dv@","xpdcBdfkwH@N","zpdcBtfkwHFjE","zqdcB|awwHFx@","bqdcB`mkwH_`@feDv`@rmE","|l~cBxvdsH[r@","ll_dBht`sHF`|@w^ldA","`rgcBtq_wHGO","nqgcBlq_wHPF","bcrdB|c_mHIiC","`crdBln_mH?eC","|zqdBtz{lHBpB","`{qdBf~{lHpDrxA","vbrdBp{vlHSdC","bbrdBv_wlHoBjU","pcrdBh`wlHV}B","x{qdBjs{lHeCkiA|JugA","l|qdBtz{lHC}@","r|qdBv_|lHEaD","h|qdBvx{lHOkD","nardBhy~lH{CqxA","pzqdB|t{lHF~B","xzqdB|x{lHBv@","v}qdB~zwlHAV","r~qdBbvwlH[zC","|qqdBzsfmHlJmY","bqqdBtsfmHu@vD","zxqdBlzzlHFhE","byqdBv`{lHl@dS","loqdBlyfmHeLn_@","h|tdB|valHEhi@","n}sdBtemlHd@_D","b_tdBr~llHV_C","xyrdBpxrlHLiA","|wrdBnbslHz@}H","hvrdBhkslHr@yG","hhrdBj|ulH~LapA","dxtdBrahlHDsF","x`tdBjvllHjVwsC","z_tdBrzllH\\gC","t~sdBt`mlHLaA","`ytdB|fglH@_B","jxtdB~yglHTaR","p|tdBrhclHf@oh@","f~tdB`yalHL_B","x}tdBb_blHLaE","twtdBtaglHI~B","xxtdB~sflHc@tL","dytdB~gflHK~J","`{tdBfgdlHCnC","d{tdBlbdlHCxC","~|sdBj`mlHYrB","l}sdBf~llHMbA","b_tdBtullHu@pG","v_tdBnrllHSdB","tftdBloklHM`A","hgtdBtlklHSvA","thtdBteklHk@~E","fftdBnqklHoE~_@","t}qdBv{wlHe@rF","~brdB~yvlHGp@","pcrdBbvvlHQzB","`urdBhfslHYlC","jwrdBlzrlHiAzJ","nxrdBlurlHc@~C","ftrdBvjslHEZ","d|sdB~cmlH_BdN","zvqdB`wylHFdC","bwqdBf{ylHv@d^","xvqdB`iylHCnG","n|qdBjcxlHuDtd@","tqfcBxvdwHc^hi@qc@ffAxAx|A","ftfcBnsdwHqAhB","t~tdB`valHXu@","h{tdBlvalH^N","j_udBtsalHEM","r~tdBrralHGC","n_udBjtalHCU","`{tdBzualHFP","d{tdBvtalHEN","zvtdBdzhlHGfA","rwtdBhchlHWzU","zvtdB|vglHAxA","xvtdBvyglHDtC","`wtdBzsglHE`B","fwtdBhmglHEpE","hwtdBliglHAzB","jwtdBteglHAvB","xd{cBhpmrHVkB","~d{cBrlmrH[vB","~{{cB`wkrH{A`A","pe{cB|lmrHLq@","rohcBp~`wHGpH","~mhcB|t`wHr@rH","jzrdBtlrlH{@vG","dysdBdsmlHu@nG","|ztdBvkdlHw@f{@","l{tdBvkdlHb@cb@","b|tdBfaclH]d`@","vyidBzf}mHeIvbA","xyidBfe}mHAr@","teidBhm`nHMv@","|fidBbi`nHg@dC","tiidBh_`nHwAxH","rmidBnq_nH}BxL","poidBrj_nHYvA","vnidBjm_nHc@bC","feidB`o`nHss@dyD","~h|cBtusrHvKb_@","vu|cBxutrHDN","johcBbhawHoAzF","zlhcB~oawH[xA","~{adBpcwnH|Ovc@","`cwbBrccuH]Z","ncwbBbccuHMN","``wbBrfcuHq@v@","~vtdBl~glHRzC","hdrdBj|vlH~B__@","bardBn{~lHXvP","nbrdBdm_mHYwP","r`rdBzw~lHDtF","xbrdBr__mHi@iE","tbrdBfp_mHJy@","rardBbl_mHJbC","|w{cBn|krH|@qA","xu{cBx}krHyOxm@","zy{cB|ykrHbA{A","by{cBbykrHkArA","ncrdBbb`mHY{P","tbrdBha`mHZvU","xnrdB`~bmHtAH","xprdB||bmH_Ab@","~prdB`}bmHEC","rq{cBdhlrHhEuJ","lq{cBthlrHDO","ncfdBf}coHjTvnC","pcfdBt|coHAP","xfgdBloooHyKrr@","~yfdB`cqoHER","fgcdBzz`rH}NrV","hwbdBnrarHs@lA","lh|cBbtsrHPp@","`g|cBzosrHNv@","pd{cBxqmrHFo@","~e{cBjkmrHlJua@","no{cBvoprH[o@","vv{cBv{krH]`A","raedBxl}qHgPjj@","dcedB||knHXm@","needBzxknHdUqd@","needBzxknHo@rA"],"GO-417":["d_|cBporrH|aDyf@~}D~~BnxEny@","di`eBhbesHl@d@","|rydB|}~rHn@X","ziydBfy~rH`HtC","ltydBv~~rHdRbI","rj`eBncesH~FnK_Av`Bjc@toCsAxy@_Sjq@mTbTRro@{k@tfA}u@|r@","rgzdBzh_sHfGlC","juwdBp|~rHjVpO","riudBvt{rHl]xp@","`hvdBpf}rHfb@hn@","d_|cBporrHuAA","d}{cBfqrrH~@u@","zozdBhm_sHht@db@hf@nq@zS~~@`a@nEvd@xW","zeydBhw~rH~B|@","vlxdBbm_sHkVqO","hkwdBzu~rH`ItE","vlxdBbm_sHnB~B","ve}dB~pvsH{@v@","j{mdBlbwrHljAjS||Ale@zcAnvA","rzmdBfbwrHVD"],"GO-568":["z`weBzemoHhRfG","~xveBjdmoHhAuA","pzveBxdmoHjBJ","|}veBdemoH_A_A","|}veBdemoH|AT","dphgBby_pHxBI","~shgBxx_pH|mBr^xo@zZfyAbG","l}weBlomoHt_Bga@|[uBj|G~y@|k@xBn]oKjj@fIddB|_Df{ArnAlp@|Fbi@rP`iA|Jji@k@~sAhTty@gF|l@zq@t[`Qd~ArJnxAh`@fq@sB~\\n\\|dArV|HlXi@dn@f`@l]l[zD","lwweBbpmoH??","l}weBlomoHqBE","dtweBbnmoH~AdB","vxweBbomoHqC_@","h{veBtamoHiAtA"]};
+  var NATIVE = true;
+
+  var SVGNS = "http://www.w3.org/2000/svg";
+  var META = ["_layer","_name","_lat","_lng","_i","__h","__hz","_road","_km","_d"];
+  var rows = [], fields = [], serialKey = null, addrKey = null, cityKey = null;
+  var filterDefs = [], active = {}, query = "", hits = [], selected = -1;
+  var myPos = null, gpsOn = false, shown = 60;
+
+  var $ = function(id){ return document.getElementById(id); };
+  var qInput = $("q"), results = $("results"), emptyBox = $("empty"), svg = $("map");
+
+  /* ---------- formatos compactos (economia de tamanho) ---------- */
+  function decodePoly(str){
+    var idx = 0, lat = 0, lng = 0, out = [], b, shift, result;
+    while (idx < str.length){
+      shift = 0; result = 0;
+      do { b = str.charCodeAt(idx++) - 63; result |= (b & 31) << shift; shift += 5; } while (b >= 32);
+      lat += (result & 1) ? ~(result >> 1) : (result >> 1);
+      shift = 0; result = 0;
+      do { b = str.charCodeAt(idx++) - 63; result |= (b & 31) << shift; shift += 5; } while (b >= 32);
+      lng += (result & 1) ? ~(result >> 1) : (result >> 1);
+      out.push(lat * 1e-5, lng * 1e-5);
+    }
+    return out;
+  }
+  function expandRoads(){
+    if (!ROADS) return;
+    for (var k in ROADS){
+      var arr = ROADS[k];
+      for (var i = 0; i < arr.length; i++) if (typeof arr[i] === "string") arr[i] = decodePoly(arr[i]);
+    }
+  }
+  function expandPack(d){
+    if (!d || !d.fields) return d;
+    var out = [], i, j;
+    for (i = 0; i < d.rows.length; i++){
+      var a = d.rows[i];
+      var o = { _layer: d.layerNames[d.layers[i]], _name: d.names[i],
+                _lat: d.coords[i*2], _lng: d.coords[i*2+1] };
+      for (j = 0; j < d.fields.length; j++) if (a[j]) o[d.fields[j]] = a[j];
+      out.push(o);
+    }
+    return { origem: d.origem, data: d.data, rows: out };
+  }
+
+  /* ---------- armazenamento local (conveniência) ---------- */
+  function save(k, v){ try { localStorage.setItem("eq_" + k, JSON.stringify(v)); } catch (e){} }
+  function load(k, d){ try { var v = localStorage.getItem("eq_" + k); return v == null ? d : JSON.parse(v); } catch (e){ return d; } }
+
+  /* ---------- utilidades ---------- */
+  function norm(s){
+    return String(s == null ? "" : s).normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase();
+  }
+  function squash(s){ return norm(s).replace(/[^a-z0-9]+/g,""); }
+  function tidy(v){
+    var s = String(v == null ? "" : v).trim();
+    if (/^-?\d+\.0$/.test(s)) s = s.slice(0,-2);
+    return s;
+  }
+  function esc(s){
+    return String(s).replace(/[&<>"]/g, function(c){ return { "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]; });
+  }
+  function highlight(text, terms){
+    var out = esc(tidy(text));
+    if (!terms.length) return out;
+    var n = norm(out), marks = [];
+    terms.forEach(function(t){
+      if (t.length < 2) return;
+      var from = 0, i;
+      while ((i = n.indexOf(t, from)) !== -1){ marks.push([i, i+t.length]); from = i + t.length; }
+    });
+    if (!marks.length) return out;
+    marks.sort(function(a,b){ return a[0]-b[0]; });
+    var merged = [], cur = marks[0];
+    for (var k = 1; k < marks.length; k++){
+      if (marks[k][0] <= cur[1]) cur[1] = Math.max(cur[1], marks[k][1]);
+      else { merged.push(cur); cur = marks[k]; }
+    }
+    merged.push(cur);
+    var res = "", last = 0;
+    merged.forEach(function(m){ res += out.slice(last,m[0]) + "<mark>" + out.slice(m[0],m[1]) + "</mark>"; last = m[1]; });
+    return res + out.slice(last);
+  }
+  function uniq(arr){
+    var out = [];
+    arr.forEach(function(v){ if (v !== "" && v != null && out.indexOf(v) === -1) out.push(v); });
+    return out.sort(function(a,b){ return String(a).localeCompare(String(b),"pt-BR"); });
+  }
+  function km(m){
+    if (m == null) return "";
+    return m < 1000 ? Math.round(m) + " m" : (m/1000).toFixed(m < 10000 ? 1 : 0).replace(".", ",") + " km";
+  }
+  function haversine(a, b, c, d){
+    var R = 6371000, p = Math.PI/180;
+    var dLat = (c-a)*p, dLng = (d-b)*p;
+    var h = Math.sin(dLat/2)*Math.sin(dLat/2) + Math.cos(a*p)*Math.cos(c*p)*Math.sin(dLng/2)*Math.sin(dLng/2);
+    return 2*R*Math.asin(Math.sqrt(h));
+  }
+
+  /* ---------- esquema ---------- */
+  function buildSchema(){
+    var seen = [];
+    rows.forEach(function(r){ Object.keys(r).forEach(function(k){ if (seen.indexOf(k) === -1) seen.push(k); }); });
+    fields = seen.filter(function(k){ return META.indexOf(k) === -1; });
+
+    serialKey = fields.filter(function(k){ return /(n[º°o]?\.?\s*de\s*)?s[ée]rie|serial/i.test(k); })[0] || null;
+    addrKey   = fields.filter(function(k){ return /endere[çc]o|local|rodovia|trecho/i.test(k); })[0] || null;
+    cityKey   = fields.filter(function(k){ return /^cidade|munic[íi]pio/i.test(k); })[0] || null;
+
+    rows.forEach(function(r, i){
+      r._i = i;
+      r._lat = r._lat != null ? Number(r._lat) : NaN;
+      r._lng = r._lng != null ? Number(r._lng) : NaN;
+      var a = addrKey ? tidy(r[addrKey]) : (r._name || "");
+      var m = a.match(/\b([A-Z]{2}-?\s?\d{2,3})\b[^\d]{0,12}km\s*0*(\d+)(?:\s*\+\s*(\d+))?/i);
+      if (m){
+        r._road = m[1].toUpperCase().replace(/\s/g,"").replace(/^([A-Z]{2})(\d)/,"$1-$2");
+        r._km = Number(m[2]) + (m[3] ? Number(m[3])/1000 : 0);
+      } else { r._road = null; r._km = null; }
+    });
+
+    var pri = function(k){
+      if (/tipo|equipamento/i.test(k)) return 1;
+      if (/energia/i.test(k)) return 2;
+      if (/empresa|fabricante|modelo/i.test(k)) return 3;
+      if (/captura|regra|status|situa/i.test(k)) return 4;
+      if (/sentido/i.test(k)) return 5;
+      return 6;
+    };
+    filterDefs = [];
+    var layers = uniq(rows.map(function(r){ return r._layer; }));
+    if (layers.length > 1) filterDefs.push({ key:"_layer", label:"Camada", values:layers });
+    var cand = [];
+    fields.forEach(function(k){
+      if (/lat|long|s[ée]rie|serial|endere|sre|ponto|c[óo]d/i.test(k)) return;
+      if (/vel\.|velocidad|faixa|km\/h/i.test(k)) return;
+      var vals = uniq(rows.map(function(r){ return tidy(r[k]); }));
+      if (vals.length > 1 && vals.length <= 10) cand.push({ key:k, label:k, values:vals, p:pri(k) });
+    });
+    cand.sort(function(a,b){ return a.p - b.p || a.values.length - b.values.length; });
+    filterDefs = filterDefs.concat(cand).slice(0,4);
+    active = {};
+    selected = -1;
+  }
+  function haystack(r){
+    if (r.__h) return r.__h;
+    var parts = [r._name || ""];
+    fields.forEach(function(k){ parts.push(r[k]); });
+    var j = parts.join(" · ");
+    r.__h = norm(j); r.__hz = squash(j);
+    return r.__h;
+  }
+
+  /* ---------- chips de filtro ---------- */
+  function renderChips(){
+    var bar = $("chipbar");
+    bar.textContent = "";
+
+    var gps = document.createElement("button");
+    gps.type = "button"; gps.className = "chip gps";
+    gps.setAttribute("aria-pressed","false");
+    gps.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/><circle cx="12" cy="12" r="5"/></svg>Perto de mim';
+    gps.addEventListener("click", function(){ toggleGps(gps); });
+    bar.appendChild(gps);
+
+    filterDefs.forEach(function(def){
+      def.values.forEach(function(v){
+        var b = document.createElement("button");
+        b.type = "button"; b.className = "chip";
+        b.setAttribute("aria-pressed","false");
+        b.innerHTML = '<span class="grp">' + esc(shortLabel(def)) + "</span>" + esc(v);
+        b.addEventListener("click", function(){
+          var on = b.getAttribute("aria-pressed") === "true";
+          b.setAttribute("aria-pressed", on ? "false" : "true");
+          var set = active[def.key] || (active[def.key] = []);
+          if (on) set.splice(set.indexOf(v),1); else set.push(v);
+          if (!set.length) delete active[def.key];
+          shown = 60; render();
+        });
+        bar.appendChild(b);
+      });
+    });
+  }
+  function shortLabel(def){
+    if (def.key === "_layer") return "O.S.";
+    return def.label.replace(/\s*\(.*\)/,"").split(" ")[0];
+  }
+  function matches(r, terms, zterms){
+    for (var key in active){
+      var have = key === "_layer" ? r._layer : tidy(r[key]);
+      if (active[key].indexOf(have) === -1) return false;
+    }
+    if (!terms.length) return true;
+    haystack(r);
+    for (var i = 0; i < terms.length; i++){
+      if (r.__h.indexOf(terms[i]) === -1 && r.__hz.indexOf(zterms[i]) === -1) return false;
+    }
+    return true;
+  }
+
+  /* ---------- GPS ---------- */
+  function toggleGps(btn){
+    if (gpsOn){ gpsOn = false; btn.setAttribute("aria-pressed","false"); btn.lastChild.textContent = "Perto de mim"; render(); return; }
+    if (!navigator.geolocation){ note("Este navegador não informa a localização."); return; }
+    btn.lastChild.textContent = "Localizando…";
+    navigator.geolocation.getCurrentPosition(function(pos){
+      myPos = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+      gpsOn = true;
+      btn.setAttribute("aria-pressed","true");
+      btn.lastChild.textContent = "Perto de mim";
+      render();
+    }, function(err){
+      btn.lastChild.textContent = "Perto de mim";
+      note(err.code === 1 ? "Permissão de localização negada. Libere o GPS para este site e tente de novo."
+                          : "Não consegui obter a localização agora.");
+    }, { enableHighAccuracy:true, timeout:12000, maximumAge:30000 });
+  }
+  function note(t){
+    var m = $("msg"); m.hidden = false; m.textContent = t;
+    $("tools").open = true;
+    $("tools").scrollIntoView({ behavior:"smooth", block:"center" });
+  }
+
+  /* ---------- mapa ---------- */
+  var view = { k:1, cx:0.5, cy:0.5 }, mapReady = false, mapDirty = true, baseDrawn = false, rafId = 0, fittedVisible = false;
+  var layerG, roadG, markG, labelG, tip = $("tip");
+  function mx(lng){ return (lng + 180)/360; }
+  function my(lat){ var s = Math.sin(lat*Math.PI/180); return 0.5 - Math.log((1+s)/(1-s))/(4*Math.PI); }
+  function size(){ var b = svg.getBoundingClientRect(); return { w:b.width || 720, h:b.height || 420 }; }
+  function toScreen(r){
+    var s = size();
+    return [ (mx(r._lng) - view.cx)*view.k + s.w/2, (my(r._lat) - view.cy)*view.k + s.h/2 ];
+  }
+  function fitTo(list){
+    var pts = (list && list.length ? list : rows).filter(function(r){ return isFinite(r._lat) && isFinite(r._lng); });
+    if (myPos && gpsOn) pts = pts.concat([{ _lat:myPos.lat, _lng:myPos.lng }]);
+    if (!pts.length) return;
+    var xs = pts.map(function(r){ return mx(r._lng); }), ys = pts.map(function(r){ return my(r._lat); });
+    var x0 = Math.min.apply(null,xs), x1 = Math.max.apply(null,xs);
+    var y0 = Math.min.apply(null,ys), y1 = Math.max.apply(null,ys);
+    var s = size();
+    view.k = Math.min((s.w-70)/Math.max(x1-x0,1e-5), (s.h-70)/Math.max(y1-y0,1e-5));
+    view.cx = (x0+x1)/2; view.cy = (y0+y1)/2;
+    drawMap();
+  }
+  function el(name, attrs){
+    var e = document.createElementNS(SVGNS, name);
+    for (var a in attrs) e.setAttribute(a, attrs[a]);
+    return e;
+  }
+  function typeOf(r){ return tidy(r["Tipo Equipamento"]) || ""; }
+  var TYPE_COLORS = {};
+  function colorFor(r){
+    var t = typeOf(r);
+    if (!t) return "var(--accent)";
+    if (!(t in TYPE_COLORS)){
+      var palette = ["var(--accent)","var(--amber)","var(--violet)","var(--green)","#b4453c"];
+      TYPE_COLORS[t] = palette[Object.keys(TYPE_COLORS).length % palette.length];
+    }
+    return TYPE_COLORS[t];
+  }
+  function renderLegend(){
+    var types = uniq(rows.map(typeOf));
+    $("legend").innerHTML = !types.length ? "" : types.map(function(t){
+      return '<span><i style="background:' + colorFor({ "Tipo Equipamento":t }) + '"></i>' + esc(t) + "</span>";
+    }).join("");
+  }
+  function bboxOf(flat){
+    var s1 = 90, n1 = -90, w1 = 180, e1 = -180;
+    for (var i = 0; i < flat.length; i += 2){
+      if (flat[i] < s1) s1 = flat[i];
+      if (flat[i] > n1) n1 = flat[i];
+      if (flat[i+1] < w1) w1 = flat[i+1];
+      if (flat[i+1] > e1) e1 = flat[i+1];
+    }
+    flat.__bb = [s1, n1, w1, e1];
+    return flat.__bb;
+  }
+  function viewBounds(s){
+    function lat(py){ return Math.atan(Math.sinh(Math.PI*(1 - 2*(view.cy + (py - s.h/2)/view.k))))*180/Math.PI; }
+    function lng(px){ return (view.cx + (px - s.w/2)/view.k)*360 - 180; }
+    return { n:lat(0), s:lat(s.h), w:lng(0), e:lng(s.w) };
+  }
+  function niceStep(span){
+    var raw = span/4, pow = Math.pow(10, Math.floor(Math.log10(raw))), n = raw/pow;
+    return (n >= 5 ? 5 : n >= 2 ? 2 : 1) * pow;
+  }
+  function setupMap(){
+    svg.textContent = "";
+    fittedVisible = mapVisible();
+    layerG = el("g"); svg.appendChild(layerG);
+    roadG = el("g"); svg.appendChild(roadG);
+    markG = el("g"); svg.appendChild(markG);
+    labelG = el("g"); svg.appendChild(labelG);
+    mapReady = true;
+    fitTo(rows);
+    renderLegend();
+  }
+  function drawBase(){
+    if (!mapReady || !mapVisible()) { mapDirty = true; return; }
+    var s = size();
+    if (!s.w) return;
+    baseDrawn = true;
+    svg.setAttribute("viewBox", "0 0 " + s.w + " " + s.h);
+
+    layerG.textContent = "";
+    var lngSpan = 360*s.w/view.k, step = niceStep(lngSpan);
+    var lngC = view.cx*360 - 180;
+    for (var lg = Math.floor((lngC - lngSpan/2)/step)*step; lg <= lngC + lngSpan/2 + step; lg += step){
+      var x = (mx(lg) - view.cx)*view.k + s.w/2;
+      if (x < 0 || x > s.w) continue;
+      layerG.appendChild(el("line",{ x1:x, y1:0, x2:x, y2:s.h, class:"grid-l" }));
+      if (x > 125){
+        var tx = el("text",{ x:x+3, y:s.h-46, class:"glabel" });
+        tx.textContent = lg.toFixed(step < 1 ? 2 : 0) + "°";
+        layerG.appendChild(tx);
+      }
+    }
+    var latC = Math.atan(Math.sinh(Math.PI*(1-2*view.cy)))*180/Math.PI;
+    var latSpan = lngSpan*(s.h/s.w)*Math.cos(latC*Math.PI/180), lstep = niceStep(latSpan);
+    for (var la = Math.floor((latC - latSpan/2)/lstep)*lstep; la <= latC + latSpan/2 + lstep; la += lstep){
+      if (la <= -85 || la >= 85) continue;
+      var y = (my(la) - view.cy)*view.k + s.h/2;
+      if (y < 0 || y > s.h) continue;
+      layerG.appendChild(el("line",{ x1:0, y1:y, x2:s.w, y2:y, class:"grid-l" }));
+      if (y > 44 && y < s.h-44){
+        var ty = el("text",{ x:6, y:y-4, class:"glabel" });
+        ty.textContent = la.toFixed(lstep < 1 ? 2 : 0) + "°";
+        layerG.appendChild(ty);
+      }
+    }
+
+    roadG.textContent = ""; labelG.textContent = "";
+    var byRoad = {}, roadLabels = [];
+    rows.forEach(function(r){
+      if (!r._road || !isFinite(r._lat)) return;
+      (byRoad[r._road] || (byRoad[r._road] = [])).push(r);
+    });
+    var vb = viewBounds(s);
+    Object.keys(byRoad).forEach(function(road){
+      var list = byRoad[road].slice().sort(function(a,b){ return a._km - b._km; });
+      var geom = ROADS && ROADS[road];
+      if (geom){
+        var dd = "";
+        for (var g = 0; g < geom.length; g++){
+          var flat = geom[g], bb = flat.__bb || bboxOf(flat);
+          if (bb[0] > vb.n || bb[1] < vb.s || bb[2] > vb.e || bb[3] < vb.w) continue;
+          var drawn = 0;
+          for (var i = 0; i < flat.length; i += 2){
+            var p = toScreen({ _lat:flat[i], _lng:flat[i+1] });
+            dd += (drawn++ ? "L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1) + " ";
+          }
+        }
+        if (dd) roadG.appendChild(el("path",{ d:dd, class:"road" }));
+      } else if (list.length > 1){
+        var d = list.map(function(r,i){ var p = toScreen(r); return (i ? "L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1); }).join(" ");
+        roadG.appendChild(el("path",{ d:d, class:"road dashed" }));
+      }
+      if (list.length){
+        var mid = toScreen(list[Math.floor(list.length/2)]);
+        roadLabels.push({ name:road, x:mid[0], y:mid[1] });
+      }
+    });
+
+    var placed = [{ x:s.w-58, y:0, w:64, h:132 }, { x:0, y:0, w:190, h:42 }];
+    function place(text, x, y, cls, dx, dy){
+      var w = text.length*(cls === "rlabel" ? 6.6 : 7.0) + 12;
+      if (x < 30 || x + dx + w > s.w - 6 || y < 26 || y > s.h-40) return;
+      var box = { x:x+dx-3, y:y+dy-12, w:w, h:15 };
+      for (var i = 0; i < placed.length; i++){
+        var qq = placed[i];
+        if (box.x < qq.x+qq.w && box.x+box.w > qq.x && box.y < qq.y+qq.h && box.y+box.h > qq.y) return;
+      }
+      placed.push(box);
+      var t = el("text",{ x:x+dx, y:y+dy, class:cls });
+      t.textContent = text;
+      labelG.appendChild(t);
+    }
+    if (cityKey){
+      var cities = {};
+      rows.forEach(function(r){
+        var c = tidy(r[cityKey]);
+        if (!c || !isFinite(r._lat)) return;
+        var key = norm(c);
+        var e = cities[key] || (cities[key] = { n:0, x:0, y:0, names:{} });
+        e.n++; e.x += r._lng; e.y += r._lat;
+        e.names[c] = (e.names[c] || 0) + 1;
+      });
+      Object.keys(cities).sort(function(a,b){ return cities[b].n - cities[a].n; }).forEach(function(key){
+        var e = cities[key], p = toScreen({ _lng:e.x/e.n, _lat:e.y/e.n });
+        var name = Object.keys(e.names).sort(function(a,b){ return e.names[b] - e.names[a]; })[0];
+        place(name, p[0], p[1], "clabel", 7, -11);
+      });
+    }
+    roadLabels.forEach(function(rl){ place(rl.name, rl.x, rl.y, "rlabel", 9, 13); });
+
+    var mPerPx = 40075016.686*Math.cos(latC*Math.PI/180)/view.k;
+    var target = mPerPx*110, pw = Math.pow(10, Math.floor(Math.log10(target))), nn = target/pw;
+    var unit = (nn >= 5 ? 5 : nn >= 2 ? 2 : 1)*pw;
+    $("scalebarline").style.width = Math.round(unit/mPerPx) + "px";
+    $("scaletxt").textContent = unit >= 1000 ? Math.round(unit/1000) + " km" : Math.round(unit) + " m";
+  }
+
+  function drawMarks(){
+    if (!mapReady || !mapVisible()) { mapDirty = true; return; }
+    if (!baseDrawn){ drawBase(); }
+    var s = size();
+    if (!s.w) return;
+    markG.textContent = "";
+    var hitSet = {};
+    hits.forEach(function(r){ hitSet[r._i] = 1; });
+    rows.forEach(function(r){
+      if (!isFinite(r._lat) || !isFinite(r._lng)) return;
+      var p = toScreen(r);
+      if (p[0] < -20 || p[0] > s.w+20 || p[1] < -20 || p[1] > s.h+20) return;
+      var on = hitSet[r._i], sel = selected === r._i;
+      var c = el("circle",{
+        cx:p[0].toFixed(1), cy:p[1].toFixed(1), r: sel ? 9 : (on ? 6.5 : 3.2),
+        fill: on ? colorFor(r) : "none",
+        stroke: on ? "var(--surface)" : "var(--map-label)",
+        "stroke-width": on ? 1.6 : 1,
+        class:"mk"
+      });
+      c.dataset.i = r._i;
+      markG.appendChild(c);
+      if (sel) markG.appendChild(el("circle",{ cx:p[0].toFixed(1), cy:p[1].toFixed(1), r:15, fill:"none", stroke:colorFor(r), "stroke-width":2.2, "stroke-opacity":.6 }));
+    });
+    if (myPos && gpsOn){
+      var pm = toScreen({ _lat:myPos.lat, _lng:myPos.lng });
+      markG.appendChild(el("circle",{ cx:pm[0].toFixed(1), cy:pm[1].toFixed(1), r:16, fill:"var(--green)", "fill-opacity":.16 }));
+      markG.appendChild(el("circle",{ cx:pm[0].toFixed(1), cy:pm[1].toFixed(1), r:6, fill:"var(--green)", stroke:"var(--surface)", "stroke-width":2 }));
+    }
+
+  }
+
+  function rafDraw(){
+    if (rafId) return;
+    rafId = requestAnimationFrame(function(){ rafId = 0; drawMap(); });
+  }
+  function mapVisible(){
+    var w = $("mapwrap");
+    return !!(w && w.offsetParent !== null);
+  }
+  function drawMap(){
+    if (!mapVisible()){ mapDirty = true; return; }
+    drawBase(); drawMarks(); mapDirty = false;
+  }
+
+  /* interação do mapa (mouse + toque, com pinça) */
+  var drag = null, pts = {}, pinch = null;
+  svg.addEventListener("pointerdown", function(e){
+    pts[e.pointerId] = { x:e.clientX, y:e.clientY };
+    var ids = Object.keys(pts);
+    if (ids.length === 2){
+      var a = pts[ids[0]], b = pts[ids[1]];
+      pinch = { d: Math.hypot(a.x-b.x, a.y-b.y) };
+      drag = null; return;
+    }
+    if (e.target.classList.contains("mk")) return;
+    drag = { x:e.clientX, y:e.clientY, cx:view.cx, cy:view.cy };
+    try { svg.setPointerCapture(e.pointerId); } catch (err){}
+  });
+  svg.addEventListener("pointermove", function(e){
+    if (pts[e.pointerId]) pts[e.pointerId] = { x:e.clientX, y:e.clientY };
+    var ids = Object.keys(pts);
+    if (pinch && ids.length === 2){
+      var a = pts[ids[0]], b = pts[ids[1]], d = Math.hypot(a.x-b.x, a.y-b.y);
+      if (pinch.d > 0) zoomAt(d/pinch.d, (a.x+b.x)/2, (a.y+b.y)/2);
+      pinch.d = d; return;
+    }
+    if (drag){
+      view.cx = drag.cx - (e.clientX - drag.x)/view.k;
+      view.cy = drag.cy - (e.clientY - drag.y)/view.k;
+      rafDraw(); return;
+    }
+    if (e.pointerType === "mouse" && e.target.classList.contains("mk")){
+      var r = rows[Number(e.target.dataset.i)], b2 = svg.getBoundingClientRect();
+      tip.innerHTML = "<b>" + esc(serialKey ? tidy(r[serialKey]) : r._name) + "</b>" +
+        esc([addrKey ? tidy(r[addrKey]) : "", cityKey ? tidy(r[cityKey]) : ""].filter(Boolean).join(" · "));
+      tip.style.opacity = 1;
+      tip.style.left = Math.max(8, Math.min(e.clientX - b2.left + 14, b2.width - 240)) + "px";
+      tip.style.top = Math.max(8, e.clientY - b2.top - 52) + "px";
+    } else tip.style.opacity = 0;
+  });
+  ["pointerup","pointercancel","pointerleave"].forEach(function(ev){
+    svg.addEventListener(ev, function(e){
+      delete pts[e.pointerId];
+      if (Object.keys(pts).length < 2) pinch = null;
+      drag = null; tip.style.opacity = 0;
+    });
+  });
+  svg.addEventListener("click", function(e){
+    if (!e.target.classList.contains("mk")) return;
+    openSheet(Number(e.target.dataset.i));
+  });
+  svg.addEventListener("wheel", function(e){ e.preventDefault(); zoomAt(Math.pow(1.0016, -e.deltaY), e.clientX, e.clientY); }, { passive:false });
+  function zoomAt(f, clientX, clientY){
+    var b = svg.getBoundingClientRect();
+    var px = clientX == null ? b.width/2 : clientX - b.left;
+    var py = clientY == null ? b.height/2 : clientY - b.top;
+    var wx = view.cx + (px - b.width/2)/view.k, wy = view.cy + (py - b.height/2)/view.k;
+    view.k = Math.max(200, Math.min(view.k*f, 8e6));
+    view.cx = wx - (px - b.width/2)/view.k;
+    view.cy = wy - (py - b.height/2)/view.k;
+    rafDraw();
+  }
+  $("zin").addEventListener("click", function(){ zoomAt(1.7); });
+  $("zout").addEventListener("click", function(){ zoomAt(1/1.7); });
+  $("zfit").addEventListener("click", function(){ fitTo(hits); });
+  window.addEventListener("resize", drawMap);
+
+  /* ---------- abas ---------- */
+  function setView(v){
+    document.body.className = document.body.className.replace(/view-\w+/g,"").trim() + " view-" + v;
+    $("tabList").setAttribute("aria-selected", v === "list" ? "true" : "false");
+    $("tabMap").setAttribute("aria-selected", v === "map" ? "true" : "false");
+    save("view", v);
+    if (v === "map") requestAnimationFrame(function(){
+      if (!fittedVisible && mapVisible()){ fittedVisible = true; fitTo(hits.length ? hits : rows); }
+      else drawMap();
+    });
+  }
+  $("tabList").addEventListener("click", function(){ setView("list"); });
+  $("tabMap").addEventListener("click", function(){ setView("map"); });
+
+  /* ---------- lista ---------- */
+  function rowEl(r, terms){
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "row" + (selected === r._i ? " sel" : "");
+    b.dataset.i = r._i;
+
+    var serial = serialKey ? tidy(r[serialKey]) : (r._name || "—");
+    var addr = addrKey ? tidy(r[addrKey]) : "";
+    var city = cityKey ? tidy(r[cityKey]) : "";
+    var t = typeOf(r);
+
+    var top = document.createElement("div");
+    top.className = "rtop";
+    top.innerHTML = '<i class="rdot" style="background:' + colorFor(r) + '"></i>' +
+      '<span class="rserial">' + highlight(serial, terms) + "</span>";
+    b.appendChild(top);
+
+    var loc = document.createElement("div");
+    loc.className = "rloc";
+    loc.innerHTML = highlight([addr, city].filter(Boolean).join(" · "), terms);
+    b.appendChild(loc);
+
+    var side = document.createElement("div");
+    side.className = "rside";
+    if (gpsOn && r._d != null) side.innerHTML += '<span class="rdist">' + km(r._d) + "</span>";
+    if (t) side.innerHTML += '<span class="rtag">' + esc(t) + "</span>";
+    b.appendChild(side);
+
+    b.addEventListener("click", function(){ openSheet(r._i); });
+    return b;
+  }
+
+  /* ---------- ficha ---------- */
+  var sheet = $("sheet"), scrim = $("scrim");
+  function openSheet(i){
+    var r = rows[i];
+    if (!r) return;
+    selected = i;
+    var serial = serialKey ? tidy(r[serialKey]) : (r._name || "—");
+    var addr = addrKey ? tidy(r[addrKey]) : "", city = cityKey ? tidy(r[cityKey]) : "";
+    var has = isFinite(r._lat) && isFinite(r._lng);
+
+    var html = '<div class="sheet-grip"></div><div class="sheet-head"><div><div class="s">' + esc(serial) + "</div>" +
+      '<div class="sub">' + esc([addr, city].filter(Boolean).join(" · ")) + (gpsOn && r._d != null ? " · " + km(r._d) + " de você" : "") + "</div></div>" +
+      '<button class="closeb" type="button" id="sheetClose" aria-label="Fechar">&times;</button></div>';
+
+    html += '<div class="acts">';
+    if (has){
+      var ll = r._lat + "," + r._lng;
+      var navHref = NATIVE ? "google.navigation:q=" + ll
+                           : "https://www.google.com/maps/dir/?api=1&destination=" + ll + "&travelmode=driving";
+      var mapHref = NATIVE ? "geo:" + ll + "?q=" + ll + "(" + encodeURIComponent(serial) + ")"
+                           : "https://www.google.com/maps/search/?api=1&query=" + ll;
+      html += '<a href="' + navHref + '" target="_blank" rel="noopener">' +
+        '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l18-8-8 18-2-8-8-2z"/></svg>Navegar</a>';
+      html += '<a href="' + mapHref + '" target="_blank" rel="noopener">' +
+        '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>Ver mapa</a>';
+    }
+    html += '<button type="button" id="sheetCopy">' +
+      '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg>Copiar</button></div>';
+
+    var tg = "";
+    if (r._layer) tg += '<span class="tag t-n">' + esc(r._layer) + "</span>";
+    ["Tipo Equipamento","Energia","Regras de Operação"].forEach(function(k,ix){
+      var v = tidy(r[k]);
+      if (v) tg += '<span class="tag ' + ["t-a","t-b","t-c"][ix] + '">' + esc(v) + "</span>";
+    });
+    if (tg) html += '<div class="tags">' + tg + "</div>";
+
+    var dl = "";
+    fields.forEach(function(k){
+      if (k === addrKey || k === cityKey) return;
+      if (/^(latitude|longitude)$/i.test(k)) return;
+      if (/^(tipo equipamento|energia|regras de opera)/i.test(k)) return;
+      var v = tidy(r[k]);
+      if (v) dl += "<dt>" + esc(k) + "</dt><dd>" + esc(v.replace(/\n+/g," / ")) + "</dd>";
+    });
+    if (has) dl += "<dt>Coordenadas</dt><dd>" + esc(r._lat.toFixed(6) + ", " + r._lng.toFixed(6)) + "</dd>";
+    html += '<dl class="specs">' + dl + "</dl>";
+
+    sheet.innerHTML = html;
+    sheet.hidden = false;
+    requestAnimationFrame(function(){ sheet.classList.add("open"); scrim.classList.add("open"); });
+
+    $("sheetClose").addEventListener("click", closeSheet);
+    $("sheetCopy").addEventListener("click", function(){
+      var lines = [serial];
+      fields.forEach(function(k){ var v = tidy(r[k]); if (v) lines.push(k + ": " + v.replace(/\n+/g," / ")); });
+      if (r._layer) lines.push("Camada: " + r._layer);
+      if (has) lines.push("Coordenadas: " + r._lat.toFixed(6) + ", " + r._lng.toFixed(6));
+      var btn = this, done = function(){
+        btn.classList.add("done"); btn.lastChild.textContent = "Copiado";
+        setTimeout(function(){ btn.classList.remove("done"); btn.lastChild.textContent = "Copiar"; }, 1800);
+      };
+      try { navigator.clipboard.writeText(lines.join("\n")).then(done, done); } catch (e){ done(); }
+    });
+
+    if (has){
+      view.cx = mx(r._lng); view.cy = my(r._lat);
+      view.k = Math.max(view.k, 150000);
+    }
+    render();
+  }
+  function closeSheet(){
+    sheet.classList.remove("open"); scrim.classList.remove("open");
+    setTimeout(function(){ sheet.hidden = true; }, 220);
+    selected = -1; render();
+  }
+  scrim.addEventListener("click", closeSheet);
+  document.addEventListener("keydown", function(e){
+    if (e.key === "Escape" && !sheet.hidden) closeSheet();
+  });
+
+  /* ---------- render ---------- */
+  function render(){
+    var terms = norm(query).split(/\s+/).filter(Boolean);
+    var zterms = terms.map(squash);
+    hits = rows.filter(function(r){ return matches(r, terms, zterms); });
+
+    if (gpsOn && myPos){
+      hits.forEach(function(r){
+        r._d = isFinite(r._lat) ? haversine(myPos.lat, myPos.lng, r._lat, r._lng) : null;
+      });
+      hits.sort(function(a,b){ return (a._d == null ? 1e12 : a._d) - (b._d == null ? 1e12 : b._d); });
+    }
+
+    $("count").textContent = hits.length;
+    $("total").textContent = rows.length;
+    $("clear").hidden = !query;
+
+    results.textContent = "";
+    var frag = document.createDocumentFragment();
+    hits.slice(0, shown).forEach(function(r){ frag.appendChild(rowEl(r, terms)); });
+    results.appendChild(frag);
+    if (hits.length > shown){
+      var more = document.createElement("button");
+      more.type = "button"; more.className = "more";
+      more.textContent = "Mostrar mais (" + (hits.length - shown) + " restantes)";
+      more.addEventListener("click", function(){ shown += 120; render(); });
+      results.appendChild(more);
+    }
+
+    if (!hits.length){
+      emptyBox.hidden = false;
+      emptyBox.innerHTML = query
+        ? "Nada encontrado para <b>" + esc(query) + "</b>.<br>Confira o número ou toque no X para limpar."
+        : "Nenhum equipamento com os filtros marcados.";
+      results.hidden = true;
+    } else { emptyBox.hidden = true; results.hidden = false; }
+
+    if (mapDirty || !baseDrawn) drawMap(); else drawMarks();
+  }
+
+  /* ---------- KML / KMZ ---------- */
+  function parseKML(text){
+    var doc = new DOMParser().parseFromString(text,"text/xml");
+    if (doc.querySelector("parsererror")) throw new Error("arquivo KML inválido.");
+    var out = [];
+    var folders = doc.querySelectorAll("Folder");
+    var scopes = folders.length ? folders : [doc];
+    Array.prototype.forEach.call(scopes, function(f){
+      var ln = "";
+      try { ln = ((f.querySelector(":scope > name") || {}).textContent || "").trim(); } catch (e){}
+      Array.prototype.forEach.call(f.querySelectorAll("Placemark"), function(p){
+        var o = { _layer:ln, _name: ((p.querySelector("name") || {}).textContent || "").trim() };
+        Array.prototype.forEach.call(p.querySelectorAll("ExtendedData > Data"), function(d){
+          o[d.getAttribute("name")] = (((d.querySelector("value") || {}).textContent) || "").trim();
+        });
+        if (Object.keys(o).length === 2){
+          var desc = ((p.querySelector("description") || {}).textContent || "");
+          desc.split(/<br\s*\/?>|\n/).forEach(function(line){
+            var m = line.replace(/<[^>]+>/g,"").match(/^\s*([^:]{1,40}):\s*(.+?)\s*$/);
+            if (m) o[m[1].trim()] = m[2].trim();
+          });
+        }
+        var c = (((p.querySelector("Point > coordinates") || {}).textContent) || "").trim().split(",");
+        if (c.length >= 2){ o._lng = c[0]; o._lat = c[1]; }
+        if (o._name || Object.keys(o).length > 2) out.push(o);
+      });
+    });
+    return out;
+  }
+  function adopt(list, label, footnote){
+    if (!list.length) throw new Error("nenhum ponto encontrado.");
+    rows = list;
+    buildSchema(); renderChips(); renderLegend();
+    query = ""; qInput.value = ""; shown = 60;
+    $("origem").textContent = label ? "· " + label : "";
+    $("footnote").textContent = footnote;
+    fitTo(rows); render();
+    $("tools").open = false;
+    window.scrollTo({ top:0, behavior:"smooth" });
+  }
+  function loadFile(file){
+    var msg = $("msg");
+    msg.hidden = false; msg.textContent = "Lendo " + file.name + "…";
+    var fail = function(e){ msg.textContent = "Não deu para ler " + file.name + ": " + (e.message || e); };
+    var ok = function(txt, label){
+      try {
+        var list = parseKML(txt);
+        adopt(list, label, list.length + " pontos de " + file.name);
+        msg.textContent = "Carregado: " + list.length + " pontos.";
+      } catch (e){ fail(e); }
+    };
+    if (/\.kmz$/i.test(file.name)){
+      if (typeof JSZip === "undefined"){ fail(new Error("sem conexão para abrir KMZ. Descompacte e use o .kml de dentro dele.")); return; }
+      JSZip.loadAsync(file).then(function(zip){
+        var name = Object.keys(zip.files).filter(function(n){ return /\.kml$/i.test(n); })[0];
+        if (!name) throw new Error("o KMZ não contém KML.");
+        return zip.file(name).async("string");
+      }).then(function(t){ ok(t, file.name.replace(/\.kmz$/i,"")); }).catch(fail);
+    } else file.text().then(function(t){ ok(t, file.name.replace(/\.kml$/i,"")); }).catch(fail);
+  }
+  function midFrom(url){
+    var m = String(url).match(/[?&]mid=([^&#\s]+)/);
+    if (m) return decodeURIComponent(m[1]);
+    var t = String(url).trim();
+    return /^[\w-]{20,}$/.test(t) ? t : null;
+  }
+  function useMapLink(){
+    var steps = $("steps"), mid = midFrom($("mapurl").value);
+    steps.hidden = false;
+    if (!mid){
+      steps.innerHTML = "<p>Não achei o código do mapa nesse link. Cole o endereço completo do My Maps (contém <b>mid=</b>).</p>";
+      return;
+    }
+    var kml = "https://www.google.com/maps/d/kml?mid=" + encodeURIComponent(mid) + "&forcekml=1";
+    steps.innerHTML = "<p>O navegador não deixa esta página buscar o mapa direto no Google. Dois passos:</p><ol>" +
+      '<li><a href="' + esc(kml) + '" target="_blank" rel="noopener"><b>Baixar o KML deste mapa</b></a> — abre em outra aba e salva o arquivo.</li>' +
+      "<li>Toque em <b>Abrir arquivo</b> e escolha o arquivo baixado.</li></ol>";
+    fetch(kml).then(function(r){ return r.text(); }).then(function(t){
+      var list = parseKML(t);
+      adopt(list, "Mapa " + mid.slice(0,8), list.length + " pontos carregados do link");
+      steps.innerHTML = "<p>Carregado direto do link: " + list.length + " pontos.</p>";
+    }).catch(function(){});
+  }
+
+  /* ---------- eventos ---------- */
+  qInput.addEventListener("input", function(){ query = qInput.value.trim(); shown = 60; render(); });
+  qInput.addEventListener("search", function(){ query = qInput.value.trim(); render(); });
+  $("clear").addEventListener("click", function(){ qInput.value = ""; query = ""; shown = 60; qInput.focus(); render(); });
+  $("pick").addEventListener("click", function(){ $("file").click(); });
+  $("file").addEventListener("change", function(e){ if (e.target.files[0]) loadFile(e.target.files[0]); });
+  $("usemap").addEventListener("click", useMapLink);
+  $("mapurl").addEventListener("keydown", function(e){ if (e.key === "Enter") useMapLink(); });
+  ["dragenter","dragover"].forEach(function(ev){
+    document.addEventListener(ev, function(e){ e.preventDefault(); document.body.classList.add("dragging"); });
+  });
+  document.addEventListener("dragleave", function(e){ if (e.relatedTarget === null) document.body.classList.remove("dragging"); });
+  document.addEventListener("drop", function(e){
+    e.preventDefault(); document.body.classList.remove("dragging");
+    var f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+    if (f) loadFile(f);
+  });
+
+  /* ---------- início ---------- */
+  setView(load("view","list"));
+  $("helptext").innerHTML = EMBED
+    ? "Este arquivo funciona sem internet. No Chrome do Android, toque no menu <b>⋮</b> e em <b>Adicionar à tela inicial</b> para abrir como aplicativo."
+    : "Para usar sem sinal, peça a versão em arquivo único e guarde no aparelho.";
+
+  function start(d){
+    d = expandPack(d);
+    expandRoads();
+    rows = d.rows || [];
+    buildSchema(); renderChips();
+    $("origem").textContent = d.origem ? "· " + d.origem : "";
+    $("footnote").textContent = rows.length + " pontos" + (d.origem ? " · " + d.origem : "") + (d.data ? " · base de " + d.data : "");
+    setupMap(); render();
+  }
+  function bootFail(e){
+    var c = $("booterr");
+    if (c){ c.hidden = false; c.textContent = "Erro: " + ((e && e.message) || e || "base não carregada"); }
+    $("msg").hidden = false;
+    $("msg").textContent = "Não carreguei a base. Abra um arquivo KML/KMZ pelo botão acima.";
+    $("tools").open = true;
+    try { setupMap(); render(); } catch (err){}
+  }
+  if (EMBED){
+    try { start(EMBED); } catch (e){ bootFail(e); }
+  } else {
+    fetch("dados.json").then(function(r){ return r.json(); }).then(function(d){
+      try { start(d); } catch (e){ bootFail(e); }
+    }).catch(bootFail);
+  }
+})();
+</script>
+
+<script>if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){});});}</script>
+</body></html>
